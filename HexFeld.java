@@ -3,79 +3,47 @@ import java.awt.*;
 
 public class HexFeld extends JPanel {
 
-    private Polygon[][] hexFelder;
-    private Color[][] farben;
-    private int[][] zahlen;
-
-    public HexFeld() {
-        int rows = 3;
-        int cols = 3;
-
-        hexFelder = new Polygon[rows][cols];
-        farben = new Color[rows][cols];
-        zahlen = new int[rows][cols];
-
-        int radius = 60;
-        int offsetX = 100;
-        int offsetY = 100;
-
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++) {
-
-                int x = offsetX + c * (int)(radius * 1.5);
-                int y = offsetY + r * (int)(radius * Math.sqrt(3));
-
-                // Hex erzeugen
-                hexFelder[r][c] = createHexagon(x, y, radius);
-
-                // Beispiel: Mitte = Wüste
-                if (r == 1 && c == 1) {
-                    farben[r][c] = new Color(210, 180, 140);
-                    zahlen[r][c] = 0;
-                } else {
-                    farben[r][c] = Color.GREEN;
-                    zahlen[r][c] = 8;
-                }
-            }
-        }
-    }
+    private int radius = 60;
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for (int r = 0; r < hexFelder.length; r++) {
-            for (int c = 0; c < hexFelder[r].length; c++) {
+        int centerX = getWidth() / 2;
+        int centerY = getHeight() / 2;
 
-                Polygon hex = hexFelder[r][c];
+        // Zentrum
+        drawHex(g, centerX, centerY, radius, Color.GRAY);
 
-                g.setColor(farben[r][c]);
-                g.fillPolygon(hex);
+        // 6 Hexfelder drum herum
+        for (int i = 0; i < 6; i++) {
+            double winkel = Math.toRadians(60 * i);
 
-                g.setColor(Color.BLACK);
-                g.drawPolygon(hex);
+            int offsetX = (int) (centerX + radius * 2 * Math.cos(winkel));
+            int offsetY = (int) (centerY + radius * 2 * Math.sin(winkel));
 
-                if (zahlen[r][c] > 0) {
-                    Rectangle bounds = hex.getBounds();
-                    g.drawString(
-                        String.valueOf(zahlen[r][c]),
-                        bounds.x + bounds.width / 2,
-                        bounds.y + bounds.height / 2
-                    );
-                }
-            }
+            drawHex(g, offsetX, offsetY, radius, Color.GREEN);
         }
     }
 
-    private Polygon createHexagon(int x, int y, int r) { 
+    private void drawHex(Graphics g, int x, int y, int r, Color color) {
+        Polygon hex = createHexagon(x, y, r);
+
+        g.setColor(color);
+        g.fillPolygon(hex);
+
+        g.setColor(Color.BLACK);
+        g.drawPolygon(hex);
+    }
+
+    private Polygon createHexagon(int x, int y, int r) {
         Polygon hex = new Polygon();
-        for (int i = 0; i < 6; i++)
-        { 
+        for (int i = 0; i < 6; i++) {
             double winkel = Math.toRadians(60 * i);
-            int px = (int)(x + r * Math.cos(winkel));
+            int px = (int) (x + r * Math.cos(winkel));
             int py = (int) (y + r * Math.sin(winkel));
             hex.addPoint(px, py);
         }
-        return hex; 
+        return hex;
     }
 }
