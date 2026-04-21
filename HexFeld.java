@@ -7,17 +7,31 @@ public class HexFeld extends JPanel {
     private Color[] farben;
     private int radius = 80;
 
+    // feste Zahlen (Reihenfolge egal, wird später korrekt verteilt)
+    private int[] zahlen = {
+            9,3,11,6,5,4,10,8,4,5,12,9,10,8,3,6,2,11
+        };
+
+    // finale Zahlen passend zu den Feldern
+    private int[] zahlenFinal;
+
+    // Wüste als Konstante
+    private final Color WUESTE = new Color(255, 211, 155);
+
     private final int[][] directions = {
             {1, 0}, {1, -1}, {0, -1},
             {-1, 0}, {-1, 1}, {0, 1}
-    };
+        };
 
     public HexFeld() {
         int total = 19;
         hexFelder = new Polygon[total];
         farben = new Color[total];
+        zahlenFinal = new int[total];
 
         setFarbenVerteilung();
+        setZahlenAufFelder(); // ← wichtig!
+
         setBackground(new Color(200, 230, 255));
     }
 
@@ -46,6 +60,43 @@ public class HexFeld extends JPanel {
 
             g.setColor(Color.BLACK);
             g.drawPolygon(hex);
+
+            // Mittelpunkt berechnen
+            Rectangle bounds = hex.getBounds();
+            int textX = bounds.x + bounds.width / 2;
+            int textY = bounds.y + bounds.height / 2;
+
+            int zahl = zahlenFinal[i];
+
+            if (zahl != 0) {
+
+                int circleRadius = 18;
+
+                // ⚪ Kreis
+                g.setColor(Color.WHITE);
+                g.fillOval(textX - circleRadius, textY - circleRadius, circleRadius * 2, circleRadius * 2);
+
+                // ⚫ Rand
+                g.setColor(Color.BLACK);
+                g.drawOval(textX - circleRadius, textY - circleRadius, circleRadius * 2, circleRadius * 2);
+
+                // 🔢 Zahl
+                if (zahl == 6 || zahl == 8) {
+                    g.setFont(new Font("Arial", Font.BOLD, 34));
+                    g.setColor(Color.RED);
+                } else {
+                    g.setFont(new Font("Arial", Font.BOLD, 24));
+                    g.setColor(Color.BLACK);
+                }
+
+                String text = String.valueOf(zahl);
+                FontMetrics fm = g.getFontMetrics();
+
+                int tx = textX - fm.stringWidth(text) / 2;
+                int ty = textY + fm.getAscent() / 2 - 2;
+
+                g.drawString(text, tx, ty);
+            }
         }
     }
 
@@ -82,7 +133,6 @@ public class HexFeld extends JPanel {
     }
 
     // 🎨 FARBVERTEILUNG
-
     private void setFarbenVerteilung() {
         java.util.List<Color> liste = new java.util.ArrayList<>();
 
@@ -91,14 +141,13 @@ public class HexFeld extends JPanel {
         Color weizen = new Color(255, 215, 0);
         Color lehm = new Color(238, 118, 33);
         Color stein = new Color(140, 140, 140);
-        Color wueste = new Color(255, 211, 155);
 
         addColor(liste, schaf, 4);
         addColor(liste, wald, 4);
         addColor(liste, weizen, 4);
         addColor(liste, lehm, 3);
         addColor(liste, stein, 3);
-        addColor(liste, wueste, 1);
+        addColor(liste, WUESTE, 1);
 
         if (liste.size() != farben.length) {
             throw new IllegalStateException("Falsche Anzahl an Farben!");
@@ -108,6 +157,18 @@ public class HexFeld extends JPanel {
 
         for (int i = 0; i < farben.length; i++) {
             farben[i] = liste.get(i);
+        }
+    }
+
+    private void setZahlenAufFelder() {
+        int zahlIndex = 0;
+
+        for (int i = 0; i < farben.length; i++) {
+            if (farben[i].equals(WUESTE)) {
+                zahlenFinal[i] = 0; // Wüste
+            } else {
+                zahlenFinal[i] = zahlen[zahlIndex++];
+            }
         }
     }
 
