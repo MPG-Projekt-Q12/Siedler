@@ -10,7 +10,7 @@ public class Stadt {
     private int mpx;
     private int mpy;
 
-    public Stadt(int id, int mpx, int mpy) {
+    public Stadt(int mpx, int mpy, int id) {
         this.id = id;
         this.mpx = mpx;
         this.mpy = mpy;
