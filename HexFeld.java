@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Collections;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 public class HexFeld extends JPanel {
 
     private Polygon[] hexFelder;
@@ -20,7 +23,16 @@ public class HexFeld extends JPanel {
 
     private int[] zahlen = {
             9,3,11,6,5,4,10,8,4,5,12,9,10,8,3,6,2,11
-    };
+        };
+
+    private Wuerfeln wuerfel = new Wuerfeln();
+    private final int w1x = 900;
+    private final int w1y = 850;
+
+    private final int w2x = 975;
+    private final int w2y = 850;
+
+    private final int wSize = 50;
 
     private int[] zahlenFinal;
 
@@ -29,7 +41,7 @@ public class HexFeld extends JPanel {
     private final int[][] directions = {
             {1, 0}, {1, -1}, {0, -1},
             {-1, 0}, {-1, 1}, {0, 1}
-    };
+        };
 
     private static HashMap<Punkt, Punkt> eckpunkte = new HashMap<>();
 
@@ -43,6 +55,29 @@ public class HexFeld extends JPanel {
         setZahlenAufFelder();
 
         setBackground(new Color(200, 230, 255));
+
+        addMouseListener(new java.awt.event.MouseAdapter()
+            {
+
+                @Override
+                public void mousePressed(java.awt.event.MouseEvent e) {
+
+                    int mx = e.getX();
+                    int my = e.getY();
+
+                    boolean w1 =
+                        mx >= w1x && mx <= w1x + wSize &&
+                        my >= w1y && my <= w1y + wSize;
+
+                    boolean w2 =
+                        mx >= w2x && mx <= w2x + wSize &&
+                        my >= w2y && my <= w2y + wSize;
+
+                    if (w1 || w2) {
+                        wuerfel.animation(HexFeld.this);
+                    }
+                }
+            });
     }
 
     @Override
@@ -106,6 +141,7 @@ public class HexFeld extends JPanel {
         for (Punkt p : eckpunkte.keySet()) {
             g.fillOval(p.x - 3, p.y - 3, 6, 6);
         }
+        wuerfel.zeichnen(g);
     }
 
     private int fillRing(int cx, int cy, int radiusHex, int index) {
@@ -150,11 +186,11 @@ public class HexFeld extends JPanel {
 
         return hex;
     }
-    
+
     public static HashMap<Punkt, Punkt> getEckpunkte(){
         return eckpunkte;
     }
-    
+
     private void setFarbenVerteilung() {
         List<Color> liste = new ArrayList<>();
 
