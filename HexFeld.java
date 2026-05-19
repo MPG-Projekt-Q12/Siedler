@@ -141,7 +141,11 @@ public class HexFeld extends JPanel {
         for (Punkt p : eckpunkte.keySet()) {
             g.fillOval(p.x - 3, p.y - 3, 6, 6);
         }
-        wuerfel.zeichnen(g);
+        wuerfel.zeichnen(
+            g,
+            getWidth(),
+            getHeight()
+        );
     }
 
     private int fillRing(int cx, int cy, int radiusHex, int index) {

@@ -2,15 +2,16 @@ import java.awt.*;
 
 public class Wuerfeln {
 
-    // beide Würfelzahlen
     private int wuerfel1 = 1;
     private int wuerfel2 = 1;
-    private Color farbe = Color.WHITE;
-    
-    private int cx;
-    private int cy;
 
-    // Punktpositionen
+    private int finaleSumme = 0;
+
+    private Color farbe = Color.WHITE;
+
+    private boolean fertig = true;
+
+    // Punktmatrix
     private final int[][] punkte = {
 
             {12, 12},
@@ -24,137 +25,118 @@ public class Wuerfeln {
             {12, 38},
             {25, 38},
             {38, 38}
-        };
+    };
 
-    // Welche Punkte benutzt werden
+    // Würfelanzeige
     private final int[][] wuerfel = {
 
             {},
-
             {4},
-
             {0, 8},
-
             {0, 4, 8},
-
             {0, 2, 6, 8},
-
             {0, 2, 4, 6, 8},
-
             {0, 2, 3, 5, 6, 8}
-        };
+    };
 
-    // Würfeln
+    //  Würfeln 
     public int wuerfeln() {
 
-        wuerfel1 =
-        (int)(Math.random() * 6) + 1;
+        wuerfel1 = (int)(Math.random() * 6) + 1;
+        wuerfel2 = (int)(Math.random() * 6) + 1;
 
-        wuerfel2 =
-        (int)(Math.random() * 6) + 1;
+        finaleSumme = wuerfel1 + wuerfel2;
 
-        return wuerfel1 + wuerfel2;
+        return finaleSumme;
     }
 
-    // Beide Würfel zeichnen
-    public void zeichnen(Graphics g) {
-        
-        zeichneWuerfel(g, 900, 850, wuerfel1);
+    //Zeichnen
+    public void zeichnen(Graphics g, int breite, int hoehe) {
 
-        zeichneWuerfel(g, 975, 850, wuerfel2);
+        int size = 50;
+        int abstand = 25;
 
-        // Summe anzeigen
-        g.setColor(Color.BLACK);
+        int gesamtBreite = size * 2 + abstand;
 
-        g.setFont(new Font("Arial", Font.BOLD, 30));
+        int startX = breite / 2 - gesamtBreite / 2;
+        int y = hoehe - 180;
 
-        g.drawString(
-            "Summe: " + (wuerfel1 + wuerfel2),
-            887,
-            950
-        );
-    }
+        zeichneWuerfel(g, startX, y, wuerfel1);
 
-    // EINEN Würfel zeichnen
-    private void zeichneWuerfel(
-    Graphics g,
-    int startX,
-    int startY,
-    int zahl
-    ) {
+        zeichneWuerfel(g, startX + size + abstand, y, wuerfel2);
 
-        // Würfelkasten
-        g.setColor(farbe);
+        // 🧾 Summe nur anzeigen wenn fertig
+        if (fertig) {
 
-        g.fillRoundRect(
-            startX,
-            startY,
-            50,
-            50,
-            10,
-            10
-        );
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("Ink Free", Font.BOLD, 30));
 
-        // Rand
-        g.setColor(Color.BLACK);
+            String text = "Summe: " + finaleSumme;
 
-        g.drawRoundRect(
-            startX,
-            startY,
-            50,
-            50,
-            10,
-            10
-        );
+            FontMetrics fm = g.getFontMetrics();
 
-        // Punkte zeichnen
-        for (int index : wuerfel[zahl]) {
+            int tx = breite / 2 - fm.stringWidth(text) / 2;
+            int ty = y + 100;
 
-            int x =
-                startX + punkte[index][0];
-
-            int y =
-                startY + punkte[index][1];
-
-            g.fillOval(
-                x - 5,
-                y - 5,
-                10,
-                10
-            );
+            g.drawString(text, tx, ty);
         }
     }
 
+    // 🎲 einzelner Würfel
+    private void zeichneWuerfel(Graphics g, int x, int y, int zahl) {
+
+        g.setColor(farbe);
+
+        g.fillRoundRect(x, y, 50, 50, 10, 10);
+
+        g.setColor(Color.BLACK);
+
+        g.drawRoundRect(x, y, 50, 50, 10, 10);
+
+        for (int index : wuerfel[zahl]) {
+
+            int px = x + punkte[index][0];
+            int py = y + punkte[index][1];
+
+            g.fillOval(px - 5, py - 5, 10, 10);
+        }
+    }
+
+    //Animation
     public void animation(HexFeld feld) {
 
-        new Thread(() -> 
-                {
+        new Thread(() -> {
 
-                    for (int i = 0; i < 10; i++) {
+            fertig = false;
 
-                        wuerfel1 =
-                        (int)(Math.random() * 6) + 1;
+            for (int i = 0; i < 15; i++) {
 
-                        wuerfel2 =
-                        (int)(Math.random() * 6) + 1;
+                wuerfel1 = (int)(Math.random() * 6) + 1;
+                wuerfel2 = (int)(Math.random() * 6) + 1;
 
-                        farbe = new Color(
-                            (int)(Math.random() * 255),
-                            (int)(Math.random() * 255),
-                            (int)(Math.random() * 255)
-                        );
-                        feld.repaint();
+                farbe = new Color(
+                        (int)(Math.random() * 255),
+                        (int)(Math.random() * 255),
+                        (int)(Math.random() * 255)
+                );
 
-                        try {
+                feld.repaint();
 
-                            Thread.sleep(100 + i * 15);
+                try {
+                    Thread.sleep(80 + i * 15);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    farbe = Color.WHITE;
-                    feld.repaint();
-            }).start();
+            farbe = Color.WHITE;
+
+            wuerfeln();
+
+            fertig = true;
+
+            feld.repaint();
+
+        }).start();
     }
 }
