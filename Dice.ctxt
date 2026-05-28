@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Dice
+comment1.params=draw
+comment1.target=void\ rollDice(Draw)
+comment2.params=
+comment2.target=int\ getDiceSum()
+numComments=3

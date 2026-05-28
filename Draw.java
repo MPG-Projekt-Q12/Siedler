@@ -1,0 +1,312 @@
+import javax.swing.JPanel;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
+
+public class Draw extends JPanel {
+
+    ArrayList<Tile> tiles = new ArrayList<>();
+    ArrayList<Street> streets = new ArrayList<>();
+    ArrayList<Settlement> settlements = new ArrayList<>();
+    public Dice dice = new Dice();
+
+    Color[] playerColors = {
+            Color.GRAY,
+            Color.BLUE,
+            Color.RED,
+            Color.GREEN,
+            Color.YELLOW
+        };
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        drawBackground(g);
+        for (Tile t : tiles) drawTile(g, t);
+        for (Street s : streets) drawStreet(g, s);
+        for (Settlement s : settlements) drawSettlement(g, s);
+        drawDice(g);
+    }
+
+    // Daten vom Factory setzen
+    public void setData(ArrayList<Tile> t, ArrayList<Street> s, ArrayList<Settlement> se) {
+        this.tiles = t;
+        this.streets = s;
+        this.settlements = se;
+    }
+
+    // ---------------- TILE ----------------
+
+    public void drawTile(Graphics g, Tile tile) {
+        drawHexagon(g, tile);
+        drawNumberCircle(g, tile);
+    }
+
+    public void drawHexagon(Graphics g, Tile tile) {
+
+        int radius = 100;
+
+        int[] xPoints = new int[6];
+        int[] yPoints = new int[6];
+
+        for (int i = 0; i < 6; i++) {
+
+            double angle = Math.toRadians(60 * i - 30);
+
+            xPoints[i] = (int)(tile.centerx + radius * Math.cos(angle));
+            yPoints[i] = (int)(tile.centery + radius * Math.sin(angle));
+        }
+
+        Polygon hex = new Polygon(xPoints, yPoints, 6);
+
+        g.setColor(getResourceColor(tile.resource));
+        g.fillPolygon(hex);
+
+        g.setColor(Color.BLACK);
+        g.drawPolygon(hex);
+    }
+
+    public void drawNumberCircle(Graphics g, Tile tile) {
+        int r = 30;
+        int zahl = tile.number;
+        if (zahl == 0) return;
+
+        Rectangle bounds = new Rectangle(tile.centerx - r * 3 / 2 , tile.centery - r * 3 / 2, r * 3, r * 3);
+
+        int textX = bounds.x + bounds.width / 2;
+        int textY = bounds.y + bounds.height / 2;
+
+        g.setColor(Color.WHITE);
+        g.fillOval(textX - r, textY - r, r * 2, r * 2);
+        g.setColor(Color.BLACK);
+        g.drawOval(textX - r, textY - r, r * 2, r * 2);
+
+        if (zahl == 6 || zahl == 8) {
+            g.setFont(new Font("Arial", Font.BOLD, 44));
+            g.setColor(Color.RED);
+        } else {
+            g.setFont(new Font("Arial", Font.BOLD, 34));
+            g.setColor(Color.BLACK);
+        }
+
+        String text = String.valueOf(zahl);
+        FontMetrics fm = g.getFontMetrics();
+
+        int tx = textX - fm.stringWidth(text) / 2;
+        int ty = textY + fm.getAscent() / 2 - 2;
+
+        g.drawString(text, tx, ty);
+    }
+
+    // ---------------- STREET ----------------
+
+    public void drawStreet(Graphics g, Street s) {
+
+        Graphics2D g2 = (Graphics2D) g;
+
+        int length = 60;
+        int thickness = 10;
+
+        AffineTransform old = g2.getTransform();
+
+        g2.translate(s.centerx, s.centery);
+        g2.rotate(s.angle);
+        g2.setColor(getFarbe(s.owner));
+        g2.fillRect(-length / 2, -thickness / 2, length, thickness);
+        g2.setColor(Color.BLACK);
+        g2.drawRect(-length / 2, -thickness / 2, length, thickness);
+        g2.setTransform(old);
+    }
+
+    // ---------------- SETTLEMENT ----------------
+
+    public void drawSettlement(Graphics g, Settlement s) {
+
+        int radius = s.city ? 20 : 14;
+
+        g.setColor(getFarbe(s.owner));
+        g.fillOval(s.centerx - radius, s.centery - radius, radius * 2, radius * 2);
+        g.setColor(Color.BLACK);
+        g.drawOval(s.centerx - radius, s.centery - radius, radius * 2, radius * 2);
+    }
+
+    // ---------------- COLORS ----------------
+
+    public Color getFarbe(int owner) {
+        if (owner < 0 || owner >= playerColors.length) return Color.GRAY;
+        return playerColors[owner];
+    }
+
+    // ---------------- DICE ----------------
+
+    public void drawDice(Graphics g) {
+
+        int size = 80;
+        int spacing = 26;
+        int bottomOffset = 240;
+        int font = 50;
+        int offsetText = 70;
+        int dotSize = size / 5;
+
+        int totalWidth = size * 2 + spacing;
+        int startX = (getWidth() - totalWidth) / 2;
+        int y = getHeight() - bottomOffset;
+
+        drawSingleDice(g, startX, y, size, dice.dice1, dotSize);
+        drawSingleDice(g, startX + size + spacing, y, size, dice.dice2, dotSize);
+
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, font));
+
+        String text = "Summe: " + dice.getDiceSum();
+
+        FontMetrics fm = g.getFontMetrics();
+
+        int tx = (getWidth() - fm.stringWidth(text)) / 2;
+        int ty = y + size + offsetText;
+
+        g.drawString(text, tx, ty);
+    }
+
+    public void drawSingleDice(Graphics g, int x, int y, int size, int value, int dotSize) {
+
+        int left = size / 4;
+        int middle = size / 2;
+        int right = size * 3 / 4;
+
+        int[][] points = {
+
+                {left, left},
+                {middle, left},
+                {right, left},
+
+                {left, middle},
+                {middle, middle},
+                {right, middle},
+
+                {left, right},
+                {middle, right},
+                {right, right}
+            };
+
+        int[][] diceDots = {
+
+                {},
+                {4},
+                {0, 8},
+                {0, 4, 8},
+                {0, 2, 6, 8},
+                {0, 2, 4, 6, 8},
+                {0, 2, 3, 5, 6, 8}
+            };
+
+        g.setColor(Color.WHITE);
+        g.fillRoundRect(x, y, size, size, size / 5, size / 5);
+        g.setColor(Color.BLACK);
+        g.drawRoundRect(x, y, size, size, size / 5, size / 5);
+
+        for (int index : diceDots[value]) {
+
+            int px = x + points[index][0];
+            int py = y + points[index][1];
+
+            g.fillOval(px - dotSize / 2, py - dotSize / 2, dotSize, dotSize);
+        }
+    }
+
+    public void drawPlayer(Graphics g, Player player, int x, int y) {
+
+        int width = 320;
+        int height = 120;
+
+        // Hintergrund
+        g.setColor(playerColors[player.number]);
+
+        g.fillRoundRect(
+            x,
+            y,
+            width,
+            height,
+            25,
+            25
+        );
+
+        g.setColor(Color.BLACK);
+
+        g.drawRoundRect(
+            x,
+            y,
+            width,
+            height,
+            25,
+            25
+        );
+
+        // Ressourcen
+        drawPlayerCards(g, player, x + 15, y + 20);
+
+        // Siegpunkte
+        drawPlayerWinningPoints(g, player, x + 15, y + height - 15);
+    }
+
+    public void drawPlayerCards(Graphics g, Player player, int x, int y) {
+
+        int cardWidth = 45;
+        int cardHeight = 65;
+        int spacing = 10;
+
+        Variables.Resource[] res = Variables.Resource.values();
+
+        for (int i = 0; i < res.length; i++) {
+
+            Variables.Resource r = res[i];
+
+            int cardX = x + i * (cardWidth + spacing);
+
+            g.setColor(getResourceColor(r));
+
+            g.fillRoundRect(cardX, y, cardWidth, cardHeight, 12, 12);
+            g.setColor(Color.BLACK);
+            g.drawRoundRect(cardX, y, cardWidth, cardHeight, 12, 12);
+
+            g.setFont(new Font("Arial", Font.BOLD, 22));
+
+            String text = String.valueOf(player.getResource(r));
+
+            FontMetrics fm = g.getFontMetrics();
+
+            int tx = cardX + (cardWidth - fm.stringWidth(text)) / 2;
+            int ty = y + (cardHeight + fm.getAscent()) / 2 - 3;
+
+            g.drawString(text, tx, ty);
+        }
+    }
+
+    public void drawPlayerWinningPoints(Graphics g, Player player, int x, int y) {
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 28));
+
+        String text = "Punkte: " + player.winningPoints;
+
+        g.drawString(text, x, y);
+    }
+
+    public void drawBackground(Graphics g) {
+        g.setColor(new Color(200, 230, 255));
+        g.fillRect(0, 0, getWidth(), getHeight());
+    }
+
+    public Color getResourceColor(Variables.Resource r) {
+        return switch (r) {
+            case SHEEP -> new Color(179, 238, 58);
+            case WOOD -> new Color(0, 100, 0);
+            case WHEAT -> new Color(255, 215, 0);
+            case BRICK -> new Color(238, 118, 33);
+            case STONE -> new Color(140, 140, 140);
+            case DESERT -> new Color(255, 211, 155);
+            case DEFAULT -> Color.GRAY;
+        };
+    }
+}

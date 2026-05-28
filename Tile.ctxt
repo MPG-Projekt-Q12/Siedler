@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=Tile
+comment1.params=resource\ number\ x\ y
+comment1.target=Tile(Variables.Resource,\ int,\ int,\ int)
+numComments=2

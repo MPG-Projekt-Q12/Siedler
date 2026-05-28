@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=Player
+comment1.params=number
+comment1.target=Player(int)
+comment2.params=r\ amount
+comment2.target=void\ addResource(Variables.Resource,\ int)
+comment3.params=r
+comment3.target=int\ getResource(Variables.Resource)
+comment4.params=settlements
+comment4.target=void\ calculateWinningPoints(java.util.ArrayList)
+numComments=5

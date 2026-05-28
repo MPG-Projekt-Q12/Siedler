@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=WinningPoints
+comment1.params=number\ settlements
+comment1.target=int\ calculateWinningPoints(int,\ java.util.ArrayList)
+numComments=2

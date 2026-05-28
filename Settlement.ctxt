@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Settlement
+comment1.params=centerx\ centery
+comment1.target=Settlement(int,\ int)
+comment2.params=
+comment2.target=void\ upgradetocity()
+numComments=3

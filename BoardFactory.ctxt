@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=BoardFactory
+comment1.params=draw
+comment1.target=BoardFactory(Draw)
+comment2.params=w\ h
+comment2.target=void\ createBoard(int,\ int)
+comment3.params=tile\ radius
+comment3.target=void\ createSettlements(Tile,\ int)
+comment4.params=tile\ radius
+comment4.target=void\ createStreets(Tile,\ int)
+comment5.params=x1\ y1\ x2\ y2
+comment5.target=double\ distance(int,\ int,\ int,\ int)
+numComments=6
