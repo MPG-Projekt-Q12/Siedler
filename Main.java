@@ -10,7 +10,6 @@ public class Main {
                     JFrame frame = new JFrame("Catan");
 
                     Draw draw = new Draw();
-                    draw.addMouseListener(new OnClick(draw));
 
                     frame.add(draw);
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -4,10 +4,12 @@ import java.awt.event.MouseEvent;
 public class OnClick extends MouseAdapter {
 
     private Draw draw;
+    private Turn turn;
 
     public OnClick(Draw draw){
 
         this.draw = draw;
+        this.turn = turn;
     }
 
     @Override
@@ -20,6 +22,8 @@ public class OnClick extends MouseAdapter {
         if (draw.nextButton.contains(mx, my)) {
 
             System.out.println("Weiter Button geklickt");
+
+            turn.next();
 
             return;
         }
