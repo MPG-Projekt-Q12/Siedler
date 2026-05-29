@@ -5,7 +5,7 @@ public class Player {
 
     int playerNumber;
     String name;
-    int winningPoints;
+    public int winningPoints;
     public int longestRoad = 0;
     public boolean hasLongestRoad = false;
 
@@ -33,7 +33,7 @@ public class Player {
     ArrayList<Settlement> settlements,
     ArrayList<Street> streets,
     Game game
-    ) {
+    ){
         winningPoints = WinningPoints.calculateWinningPoints(
             playerNumber,
             settlements,

@@ -160,6 +160,11 @@ public class Game {
                 boardfactory.streets,
                 this
             );
+
+            if (p.winningPoints >= 12){
+                setGameOver();
+                return;
+            }
         }
 
         draw.repaint();
@@ -183,12 +188,12 @@ public class Game {
         return null;
     }
 
-    public void updateLongestRoad(){
+    public void updateLongestRoad() {
 
         Player bestPlayer = null;
         int bestLength = 0;
 
-        for (Player p : boardfactory.players){
+        for (Player p : boardfactory.players) {
 
             int length = WinningPoints.calculateLongestRoad(
                     p.playerNumber,
@@ -197,20 +202,23 @@ public class Game {
 
             p.longestRoad = length;
 
-            if (length > bestLength && length >= 5){
+            if (length >= 5 && length > bestLength) {
                 bestLength = length;
                 bestPlayer = p;
             }
         }
 
-        if (bestPlayer != null && bestPlayer != longestRoadOwner){
+        if (longestRoadOwner != bestPlayer) {
 
-            if (longestRoadOwner != null){
+            if (longestRoadOwner != null) {
                 longestRoadOwner.hasLongestRoad = false;
             }
 
             longestRoadOwner = bestPlayer;
-            longestRoadOwner.hasLongestRoad = true;
+
+            if (longestRoadOwner != null) {
+                longestRoadOwner.hasLongestRoad = true;
+            }
         }
     }
 }

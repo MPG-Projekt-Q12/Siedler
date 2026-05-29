@@ -23,30 +23,10 @@ public class WinningPoints {
                 points += 1;
             }
         }
-
-        // ---------------- LONGEST ROAD ----------------
-        int roadLength = calculateLongestRoad(number, streets);
-
-        Player currentLongest = game.getLongestRoadOwner();
-
-        if (roadLength >= 5){
-
-            if (currentLongest == null || currentLongest.longestRoad < roadLength){
-
-                game.setLongestRoadOwner(
-                    game.getPlayerByNumber(number)
-                );
-            }
-        }
-
         if (game.getLongestRoadOwner() != null
         && game.getLongestRoadOwner().playerNumber == number){
 
             points += 2;
-        }
-
-        if (points >= 12){
-            game.setGameOver();
         }
 
         return Math.min(points, 12);
