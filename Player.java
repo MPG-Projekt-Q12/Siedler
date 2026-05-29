@@ -6,6 +6,8 @@ public class Player {
     int playerNumber;
     String name;
     int winningPoints;
+    public int longestRoad = 0;
+    public boolean hasLongestRoad = false;
 
     EnumMap<Variables.Resource, Integer> resources = new EnumMap<>(Variables.Resource.class);
 
@@ -27,7 +29,16 @@ public class Player {
         return resources.get(r);
     }
 
-    public void calculateWinningPoints(ArrayList<Settlement> settlements, Game game) {
-        winningPoints = WinningPoints.calculateWinningPoints(playerNumber, settlements, game);
+    public void calculateWinningPoints(
+    ArrayList<Settlement> settlements,
+    ArrayList<Street> streets,
+    Game game
+    ) {
+        winningPoints = WinningPoints.calculateWinningPoints(
+            playerNumber,
+            settlements,
+            streets,
+            game
+        );
     }
 }

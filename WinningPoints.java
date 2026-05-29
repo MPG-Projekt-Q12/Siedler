@@ -1,29 +1,99 @@
 import java.util.ArrayList;
 
-public class WinningPoints{
-    public static int calculateWinningPoints(int number, ArrayList<Settlement> settlements, Game game){
+public class WinningPoints {
 
-        int winningPoints = 0;
+    public static int calculateWinningPoints(
+    int number,
+    ArrayList<Settlement> settlements,
+    ArrayList<Street> streets,
+    Game game
+    ){
 
-        for (Settlement s : settlements) {
+        int points = 0;
 
-            if (s.owner == number) {
+        // ---------------- SETTLEMENTS ----------------
+        for (Settlement s : settlements){
 
-                if (s.city) {
-                    winningPoints += 2;
-                } else {
-                    winningPoints += 1;
-                }
+            if (s.owner != number) continue;
+
+            if (s.city){
+                points += 2;
+            }
+            else if (s.build){
+                points += 1;
             }
         }
 
-        if(winningPoints >= 12){
-            
+        // ---------------- LONGEST ROAD ----------------
+        int roadLength = calculateLongestRoad(number, streets);
+
+        Player currentLongest = game.getLongestRoadOwner();
+
+        if (roadLength >= 5){
+
+            if (currentLongest == null || currentLongest.longestRoad < roadLength){
+
+                game.setLongestRoadOwner(
+                    game.getPlayerByNumber(number)
+                );
+            }
+        }
+
+        if (game.getLongestRoadOwner() != null
+        && game.getLongestRoadOwner().playerNumber == number){
+
+            points += 2;
+        }
+
+        if (points >= 12){
             game.setGameOver();
-            return 12;
         }
-        else{
-            return winningPoints;
+
+        return Math.min(points, 12);
+    }
+
+    public static int calculateLongestRoad(int playerId, ArrayList<Street> streets){
+
+        int best = 0;
+
+        for (Street start : streets){
+
+            if (start.owner != playerId) continue;
+
+            best = Math.max(best, dfs(start, playerId, streets, new ArrayList<>()));
         }
+
+        return best;
+    }
+
+    private static int dfs(Street current, int playerId,
+    ArrayList<Street> streets,
+    ArrayList<Street> visited){
+
+        visited.add(current);
+
+        int max = 0;
+
+        for (Street next : streets){
+
+            if (next.owner != playerId) continue;
+            if (visited.contains(next)) continue;
+
+            if (connected(current, next)){
+                max = Math.max(max,
+                    dfs(next, playerId, streets, new ArrayList<>(visited))
+                );
+            }
+        }
+
+        return max + 1;
+    }
+
+    private static boolean connected(Street a, Street b){
+
+        return Math.hypot(
+            a.centerx - b.centerx,
+            a.centery - b.centery
+        ) < 80;
     }
 }

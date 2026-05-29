@@ -12,6 +12,8 @@ public class Dice {
         dice2 = (int)(Math.random() * 6) + 1;
 
         sum = dice1 + dice2;
+        
+        System.out.println("Es wurde eine " + sum + " geworfen");
 
     }
 

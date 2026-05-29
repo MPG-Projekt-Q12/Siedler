@@ -10,17 +10,24 @@ public class Draw extends JPanel {
     ArrayList<Settlement> settlements = new ArrayList<>();
     ArrayList<Player> players = new ArrayList<>();
 
-    public Dice dice = new Dice();
+    public Dice dice;
+
+    Color colorPlayer1 = new Color(220, 40, 40);
+    Color colorPlayer2 = new Color(0, 102, 204);
+    Color colorPlayer3 = new Color(76, 187, 23);
+    Color colorPlayer4 = new Color(250, 240, 53);
 
     Color[] playerColors = {
             Color.GRAY,
-            Color.BLUE,
-            Color.RED,
-            Color.GREEN,
-            Color.YELLOW
+            colorPlayer1,
+            colorPlayer2,
+            colorPlayer3,
+            colorPlayer4,
         };
 
     Rectangle nextButton;
+
+    int currentPlayer;
 
     //Paint
     @Override
@@ -29,8 +36,17 @@ public class Draw extends JPanel {
 
         drawBackground(g);
         for (Tile t : tiles) drawTile(g, t);
-        for (Street s : streets) drawStreet(g, s);
-        for (Settlement s : settlements) drawSettlement(g, s);
+        for (Street s : streets){
+            if (s.build){
+                drawStreet(g, s);
+            }
+        }
+
+        for (Settlement s : settlements){
+            if (s.build){
+                drawSettlement(g, s);
+            }
+        }
         for (Player p : players) drawPlayer(g, p);
         drawDice(g);
         drawNextButton(g);
@@ -326,7 +342,7 @@ public class Draw extends JPanel {
             case WHEAT -> new Color(255, 215, 0);
             case BRICK -> new Color(238, 118, 33);
             case STONE -> new Color(140, 140, 140);
-            case DESERT -> new Color(255, 211, 155);
+            case DESERT -> new Color(236, 219, 160);
             case DEFAULT -> Color.GRAY;
         };
     }
@@ -341,7 +357,7 @@ public class Draw extends JPanel {
         nextButton = new Rectangle(x, y, width, height);
 
         //Button
-        g.setColor(Color.WHITE);
+        g.setColor(playerColors[currentPlayer]);
         g.fillRoundRect(x, y, width, height, 25, 25);
 
         //Rand
