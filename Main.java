@@ -10,31 +10,24 @@ public class Main {
                     JFrame frame = new JFrame("Catan");
 
                     Draw draw = new Draw();
+                    draw.addMouseListener(new OnClick(draw));
 
                     frame.add(draw);
-
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-                    // Vollbild
                     frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
                     frame.setVisible(true);
 
-                    // Board erstellen nachdem Fenster sichtbar ist
-                    BoardFactory factory =
-                        new BoardFactory(draw);
+                    String[] playerNames = {
+                            "adam",
+                            "ben",
+                            "lfrnjesus",
+                            "TinaTurner2005"
+                        };
 
-                    factory.createBoard(
-                        frame.getWidth(),
-                        frame.getHeight()
-                    );
+                    // Game-Objekt erstellen
+                    Game game = new Game(draw);
 
-                    // Daten an Draw übergeben
-                    draw.tiles = factory.tiles;
-                    draw.streets = factory.streets;
-                    draw.settlements = factory.settlements;
-
-                    draw.repaint();
+                    game.newGame(frame.getWidth(), frame.getHeight(), playerNames);
             });
     }
 }

@@ -3,14 +3,15 @@ import java.util.EnumMap;
 
 public class Player {
 
-    int number;
+    int playerNumber;
+    String name;
+    int winningPoints;
 
     EnumMap<Variables.Resource, Integer> resources = new EnumMap<>(Variables.Resource.class);
 
-    int winningPoints;
-
-    public Player(int number) {
-        this.number = number;
+    public Player(int playerNumber, String name) {
+        this.playerNumber = playerNumber;
+        this.name = name;
 
         // initialisieren
         for (Variables.Resource r : Variables.Resource.values()) {
@@ -26,7 +27,7 @@ public class Player {
         return resources.get(r);
     }
 
-    public void calculateWinningPoints(ArrayList<Settlement> settlements) {
-        winningPoints = WinningPoints.calculateWinningPoints(number, settlements);
+    public void calculateWinningPoints(ArrayList<Settlement> settlements, Game game) {
+        winningPoints = WinningPoints.calculateWinningPoints(playerNumber, settlements, game);
     }
 }

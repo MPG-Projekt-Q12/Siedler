@@ -8,6 +8,7 @@ public class BoardFactory {
     public ArrayList<Tile> tiles = new ArrayList<>();
     public ArrayList<Street> streets = new ArrayList<>();
     public ArrayList<Settlement> settlements = new ArrayList<>();
+    public ArrayList<Player> players = new ArrayList<>();
 
     private Draw draw;
 
@@ -17,17 +18,19 @@ public class BoardFactory {
 
     // ---------------- CREATE BOARD ----------------
 
-    public void createBoard(int w, int h) {
+    public void createBoard(int w, int h, String[] playerNames) {
 
         // alte Daten löschen
         tiles.clear();
         streets.clear();
         settlements.clear();
+        players.clear();
 
         int cx = w / 2;
         int cy = h / 2;
 
         List<Variables.Resource> resources = new ArrayList<>();
+        List<Integer> numbers = new ArrayList<>(Arrays.asList(Variables.numbers));
 
         resources.addAll(Arrays.asList(
                 Variables.Resource.SHEEP, 
@@ -51,8 +54,6 @@ public class BoardFactory {
                 Variables.Resource.DESERT
             ));
         Collections.shuffle(resources);
-
-        List<Integer> numbers = new ArrayList<>(Arrays.asList(Variables.numbers));
 
         int resourceIndex = 0;
         int numberIndex = 0;
@@ -97,36 +98,28 @@ public class BoardFactory {
             }
         }
 
+        for (int i = 0; i < playerNames.length; i++) { 
+            createPlayer((i + 1), playerNames[i]);
+        }
+
+        draw.setData(tiles, streets, settlements, players);
         draw.repaint();
     }
 
     // ---------------- SETTLEMENTS ----------------
 
     public void createSettlements(Tile tile, int radius) {
-
         for (int i = 0; i < 6; i++) {
 
-            double angle =
-                Math.toRadians(60 * i - 30);
+            double angle = Math.toRadians(60 * i - 30);
 
-            int vx = (int)(
-                    tile.centerx + radius * Math.cos(angle)
-                );
-
-            int vy = (int)(
-                    tile.centery + radius * Math.sin(angle)
-                );
+            int vx = (int)(tile.centerx + radius * Math.cos(angle));
+            int vy = (int)(tile.centery + radius * Math.sin(angle));
 
             boolean exists = false;
 
             for (Settlement s : settlements) {
-
-                if (distance(
-                    s.centerx,
-                    s.centery,
-                    vx,
-                    vy
-                ) < 5) {
+                if (distance(s.centerx, s.centery, vx, vy) < 5) {
 
                     exists = true;
                     break;
@@ -135,11 +128,8 @@ public class BoardFactory {
 
             if (!exists) {
 
-                Settlement settlement =
-                    new Settlement(vx, vy);
-
+                Settlement settlement = new Settlement(vx, vy);
                 settlement.build = false;
-
                 settlements.add(settlement);
             }
         }
@@ -191,5 +181,12 @@ public class BoardFactory {
     public double distance(int x1, int y1, int x2, int y2) {
 
         return Math.hypot(x1 - x2, y1 - y2);
+    }
+
+    public void createPlayer(int number, String name){
+
+        Player player = new Player(number, name);
+
+        players.add(player);
     }
 }

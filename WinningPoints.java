@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class WinningPoints{
-    public static int calculateWinningPoints(int number, ArrayList<Settlement> settlements){
+    public static int calculateWinningPoints(int number, ArrayList<Settlement> settlements, Game game){
 
         int winningPoints = 0;
 
@@ -18,7 +18,9 @@ public class WinningPoints{
         }
 
         if(winningPoints >= 12){
-            return 1000;
+            
+            game.setGameOver();
+            return 12;
         }
         else{
             return winningPoints;

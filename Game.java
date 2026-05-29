@@ -1,33 +1,36 @@
+public class Game {
 
-/**
- * Write a description of class Game here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
-public class Game
-{
-    // instance variables - replace the example below with your own
-    private int x;
+    private BoardFactory factory;
+    private Turn turn;
 
-    /**
-     * Constructor for objects of class Game
-     */
-    public Game()
-    {
-        // initialise instance variables
-        x = 0;
+    private boolean gameOver = false;
+
+    public Game(Draw draw){
+
+        factory = new BoardFactory(draw);
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
+    public void newGame(int x, int y, String[] names){
+
+        factory.createBoard(x, y, names);
+
+        for (int i = 0; i < names.length; i++){
+            turn.startTurn1(i + 1);
+        }
+        for (int i = names.length; i > 0; i--){
+
+            turn.startTurn2(i);
+        }
+        while (gameOver == false){
+            for (int i = 0; i < names.length; i++){
+
+                turn.turn(i + 1);
+            }
+        }
+    }
+
+    public void setGameOver(){
+
+        gameOver = true;
     }
 }
