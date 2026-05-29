@@ -16,7 +16,7 @@ public class BoardFactory {
         this.draw = draw;
     }
 
-    // ---------------- CREATE BOARD ----------------
+    //Board
 
     public void createBoard(int w, int h, String[] playerNames) {
 
@@ -106,7 +106,7 @@ public class BoardFactory {
         draw.repaint();
     }
 
-    // ---------------- SETTLEMENTS ----------------
+    //Settlements
 
     public void createSettlements(Tile tile, int radius) {
         for (int i = 0; i < 6; i++) {
@@ -135,7 +135,7 @@ public class BoardFactory {
         }
     }
 
-    // ---------------- STREETS ----------------
+    //Streets
 
     public void createStreets(Tile tile, int radius) {
 
@@ -176,7 +176,7 @@ public class BoardFactory {
         }
     }
 
-    // ---------------- HELPER ----------------
+    //Helper
 
     public double distance(int x1, int y1, int x2, int y2) {
 
@@ -186,7 +186,6 @@ public class BoardFactory {
     public void createPlayer(int number, String name){
 
         Player player = new Player(number, name);
-
         players.add(player);
     }
 }
