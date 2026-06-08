@@ -191,7 +191,6 @@ public class Game {
     public void updateLongestRoad() {
 
         Player bestPlayer = null;
-        int bestLength = 0;
 
         for (Player p : boardfactory.players) {
 
@@ -202,8 +201,8 @@ public class Game {
 
             p.longestRoad = length;
 
-            if (length >= 5 && length > bestLength) {
-                bestLength = length;
+            if (length >= 5 && length > longestRoadLength) {
+                longestRoadLength = length;
                 bestPlayer = p;
             }
         }

@@ -31,6 +31,7 @@ public class BoardFactory {
 
         List<Variables.Resource> resources = new ArrayList<>();
         List<Integer> numbers = new ArrayList<>(Arrays.asList(Variables.numbers));
+        Collections.shuffle(numbers);
 
         resources.addAll(Arrays.asList(
                 Variables.Resource.SHEEP, 
@@ -183,6 +184,8 @@ public class BoardFactory {
         return Math.hypot(x1 - x2, y1 - y2);
     }
 
+    //Player
+    
     public void createPlayer(int number, String name){
 
         Player player = new Player(number, name);
