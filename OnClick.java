@@ -68,7 +68,7 @@ public class OnClick extends MouseAdapter {
                     s.build = true;
                     s.owner = player.playerNumber;
 
-                    game.updateLongestRoad();
+                    game.updateLongestRoad(player);
                     game.updateWinningPoints();
 
                     System.out.println("Settlement gebaut");
@@ -107,7 +107,7 @@ public class OnClick extends MouseAdapter {
                     s.build = true;
                     s.owner = player.playerNumber;
 
-                    game.updateLongestRoad();
+                    game.updateLongestRoad(player);
                     game.updateWinningPoints();
 
                     turn.waitingForStreet = false;
@@ -124,7 +124,7 @@ public class OnClick extends MouseAdapter {
                     s.build = true;
                     s.owner = player.playerNumber;
 
-                    game.updateLongestRoad();
+                    game.updateLongestRoad(player);
                     game.updateWinningPoints();
 
                     System.out.println("Straße gebaut");

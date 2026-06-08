@@ -188,37 +188,19 @@ public class Game {
         return null;
     }
 
-    public void updateLongestRoad() {
+    public void updateLongestRoad(Player player) {
 
-        Player bestPlayer = null;
-        int bestLength = longestRoadLength;
+        //Player bestPlayer = null;
+        //int bestLength = longestRoadLength;
 
-        for (Player p : boardfactory.players) {
+        int length = 0;
 
-            int length = WinningPoints.calculateLongestRoad(
-                    p.playerNumber,
-                    boardfactory.streets
-                );
+        length = WinningPoints.calculateLongestRoad(player.playerNumber, boardfactory.streets);
+        player.longestRoad = length;
 
-            p.longestRoad = length;
-
-            if (length >= 5 && length > bestLength) {
-                bestLength = length;
-                bestPlayer = p;
-            }
-        }
-
-        if (longestRoadOwner != bestPlayer) {
-
-            if (longestRoadOwner != null) {
-                longestRoadOwner.hasLongestRoad = false;
-            }
-
-            longestRoadOwner = bestPlayer;
-
-            if (longestRoadOwner != null) {
-                longestRoadOwner.hasLongestRoad = true;
-            }
+        if (length >= 5 && length > longestRoadLength) {
+            longestRoadLength = length;
+            longestRoadOwner = player;
         }
     }
 }
