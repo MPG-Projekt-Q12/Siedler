@@ -58,7 +58,7 @@ public class BoardFactory {
         int resourceIndex = 0;
         int numberIndex = 0;
         int[] rowLengths = {3, 4, 5, 4, 3};
-        int radius = 100;
+        int radius = 80;
 
         double hStep = Math.sqrt(3) * radius;
         double vStep = 1.5 * radius;

@@ -69,7 +69,7 @@ public class Draw extends JPanel {
 
     public void drawHexagon(Graphics g, Tile tile) {
 
-        int radius = 100;
+        int radius = 80;
 
         int[] xPoints = new int[6];
         int[] yPoints = new int[6];
@@ -166,11 +166,11 @@ public class Draw extends JPanel {
 
     public void drawDice(Graphics g) {
 
-        int size = 80;
+        int size = 60;
         int spacing = 26;
-        int bottomOffset = 240;
+        int bottomOffset = 150;
         int font = 50;
-        int offsetText = 70;
+        int offsetText = 50;
         int dotSize = size / 5;
 
         int totalWidth = size * 2 + spacing;
@@ -239,13 +239,15 @@ public class Draw extends JPanel {
         }
     }
 
+    // Player
+    
     public void drawPlayer(Graphics g, Player player) {
 
-        int startX = 100;
-        int startY = 100;
-        int width = 600;
-        int height = 300;
-        int distanceToEdges = 40;
+        int startX = 60;
+        int startY = 60;
+        int width = 500;
+        int height = 250;
+        int distanceToEdges = 30;
 
         int x;
         int y;
@@ -349,10 +351,10 @@ public class Draw extends JPanel {
 
     public void drawNextButton(Graphics g){
 
-        int width = 200;
-        int height = 150;
+        int width = 150;
+        int height = 100;
         int x = (getWidth() - width) / 2;
-        int y = 70;
+        int y = 50;
 
         nextButton = new Rectangle(x, y, width, height);
 
