@@ -5,9 +5,8 @@ public class Player {
 
     int playerNumber;
     String name;
-    public int winningPoints;
-    public int longestRoad = 0;
-    public boolean hasLongestRoad = false;
+    private int winningPoints;
+    private int longestRoad = 0;
 
     EnumMap<Variables.Resource, Integer> resources = new EnumMap<>(Variables.Resource.class);
 
@@ -40,5 +39,21 @@ public class Player {
             streets,
             game
         );
+    }
+
+    public int getWinningPoints (){
+        return winningPoints;
+    }
+
+    public void setWinningPoints (int winningPoints){
+         this.winningPoints = winningPoints;
+    }
+    
+    public int getLongestRoad (){
+        return longestRoad;
+    }
+
+    public void setLongestRoad (int longestRoad){
+         this.longestRoad = longestRoad;
     }
 }

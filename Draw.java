@@ -203,7 +203,7 @@ public class Draw extends JPanel {
         g.fillRoundRect(x + distanceToEdges / 2, y + height - textHeight - distanceToEdges * 3 / 2 + 5 , width - distanceToEdges, textHeight + distanceToEdges, 20, 20);
 
         g.setColor(Color.WHITE);
-        g.drawString("Punkte: " + player.winningPoints, x + distanceToEdges, y + height - distanceToEdges);
+        g.drawString("Punkte: " + player.getWinningPoints(), x + distanceToEdges, y + height - distanceToEdges);
 
         g.setColor(Color.WHITE);
         g.drawString(player.name, x + width - distanceToEdges - textWidth, y + height - distanceToEdges);

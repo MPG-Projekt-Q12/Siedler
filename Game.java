@@ -161,7 +161,7 @@ public class Game {
                 this
             );
 
-            if (p.winningPoints >= 12){
+            if (p.getWinningPoints() >= 12){
                 setGameOver();
                 return;
             }
@@ -196,7 +196,7 @@ public class Game {
         int length = 0;
 
         length = WinningPoints.calculateLongestRoad(player.playerNumber, boardfactory.streets);
-        player.longestRoad = length;
+        player.setLongestRoad(length);
 
         if (length >= 5 && length > longestRoadLength) {
             longestRoadLength = length;
