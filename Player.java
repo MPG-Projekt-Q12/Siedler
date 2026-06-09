@@ -3,16 +3,16 @@ import java.util.EnumMap;
 
 public class Player {
 
-    int playerNumber;
-    String name;
+    private int playerNumber;
+    private String playerName;
     private int winningPoints;
     private int longestRoad = 0;
 
     EnumMap<Variables.Resource, Integer> resources = new EnumMap<>(Variables.Resource.class);
 
-    public Player(int playerNumber, String name) {
+    public Player(int playerNumber, String playerName) {
         this.playerNumber = playerNumber;
-        this.name = name;
+        this.playerName = playerName;
 
         // initialisieren
         for (Variables.Resource r : Variables.Resource.values()) {
@@ -46,14 +46,30 @@ public class Player {
     }
 
     public void setWinningPoints (int winningPoints){
-         this.winningPoints = winningPoints;
+        this.winningPoints = winningPoints;
     }
-    
+
     public int getLongestRoad (){
         return longestRoad;
     }
 
     public void setLongestRoad (int longestRoad){
-         this.longestRoad = longestRoad;
+        this.longestRoad = longestRoad;
+    }
+
+    public int getPlayerNumber (){
+        return playerNumber;
+    }
+
+    public void setPlayerNumber (int playerNumber){
+        this.playerNumber = playerNumber;
+    }
+
+    public String getPlayerName (){
+        return playerName;
+    }
+
+    public void setPlayerName (String playerName){
+        this.playerName = playerName;
     }
 }

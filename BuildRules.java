@@ -105,7 +105,7 @@ public class BuildRules {
 
     public static boolean isSettlementFree(Settlement settlement) {
 
-        return !settlement.build;
+        return !settlement.getBuild();
     }
 
     public static boolean obeysSettlementDistanceRule(Settlement settlement, ArrayList<Settlement> settlements) {
@@ -114,7 +114,7 @@ public class BuildRules {
 
             if (s.build) {
 
-                double dist = distance(settlement.centerx, settlement.centery, s.centerx, s.centery);
+                double dist = distance(settlement.getCenterX(), settlement.getCenterY(), s.centerx, s.centery);
 
                 if (dist < 120) {
                     return false;
@@ -129,9 +129,9 @@ public class BuildRules {
 
         for (Street street : streets) {
 
-            if (street.owner == player.playerNumber) {
+            if (street.owner == player.getPlayerNumber()) {
 
-                double dist = distance(settlement.centerx, settlement.centery, street.centerx, street.centery);
+                double dist = distance(settlement.getCenterX(), settlement.getCenterY(), street.centerx, street.centery);
 
                 if (dist < 70) {
                     return true;
@@ -153,9 +153,9 @@ public class BuildRules {
 
         for (Settlement settlement : settlements) {
 
-            if (settlement.owner == player.playerNumber) {
+            if (settlement.getOwner() == player.getPlayerNumber()) {
 
-                double dist = distance(street.centerx, street.centery, settlement.centerx, settlement.centery);
+                double dist = distance(street.centerx, street.centery, settlement.getCenterX(), settlement.getCenterY());
 
                 if (dist < 70) {
                     return true;
@@ -170,7 +170,7 @@ public class BuildRules {
 
         for (Street other : streets) {
 
-            if (other != street&& other.owner == player.playerNumber) {
+            if (other != street&& other.owner == player.getPlayerNumber()) {
 
                 double dist = distance(street.centerx, street.centery, other.centerx, other.centery);
 
@@ -187,11 +187,11 @@ public class BuildRules {
 
     public static boolean isOwnSettlement(Settlement settlement, Player player) {
 
-        if (!settlement.build) {
+        if (!settlement.getBuild()) {
             return false;
         }
 
-        return settlement.owner == player.playerNumber;
+        return settlement.getOwner() == player.getPlayerNumber();
     }
 
     //Resourcechecks

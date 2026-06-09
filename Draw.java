@@ -42,7 +42,7 @@ public class Draw extends JPanel {
             }
         }
         for (Settlement s : settlements){
-            if (s.build){
+            if (s.getBuild()){
                 drawSettlement(g, s);
             }
         }
@@ -138,9 +138,9 @@ public class Draw extends JPanel {
 
         AffineTransform old = g2.getTransform();
 
-        g2.translate(s.centerx, s.centery);
+        g2.translate(s.getCenterX(), s.getCenterY());
         g2.rotate(s.angle);
-        g2.setColor(getFarbe(s.owner));
+        g2.setColor(getFarbe(s.getOwner()));
         g2.fillRect(-length / 2, -thickness / 2, length, thickness);
         g2.setColor(Color.BLACK);
         g2.drawRect(-length / 2, -thickness / 2, length, thickness);
@@ -150,12 +150,12 @@ public class Draw extends JPanel {
     // Settlement
     public void drawSettlement(Graphics g, Settlement s) {
 
-        int radius = s.city ? 20 : 14;
+        int radius = s.getCity() ? 20 : 14;
 
-        g.setColor(getFarbe(s.owner));
-        g.fillOval(s.centerx - radius, s.centery - radius, radius * 2, radius * 2);
+        g.setColor(getFarbe(s.getOwner()));
+        g.fillOval(s.getCenterX() - radius, s.getCenterY() - radius, radius * 2, radius * 2);
         g.setColor(Color.BLACK);
-        g.drawOval(s.centerx - radius, s.centery - radius, radius * 2, radius * 2);
+        g.drawOval(s.getCenterX() - radius, s.getCenterY() - radius, radius * 2, radius * 2);
     }
     
     // Player
@@ -174,18 +174,18 @@ public class Draw extends JPanel {
 
         FontMetrics fm = g.getFontMetrics();
 
-        int textWidth = fm.stringWidth(player.name);
+        int textWidth = fm.stringWidth(player.getPlayerName());
         int textHeight = fm.getHeight();
 
-        if (player.playerNumber == 2){
+        if (player.getPlayerNumber() == 2){
             x = getWidth() - width - startX;
             y = startY;
         }
-        else if (player.playerNumber == 3){
+        else if (player.getPlayerNumber() == 3){
             x = startX;
             y = getHeight() - height - startY;
         }
-        else if (player.playerNumber == 4){
+        else if (player.getPlayerNumber() == 4){
             x = getWidth() - width - startX;
             y = getHeight() - height - startY;
         }
@@ -194,7 +194,7 @@ public class Draw extends JPanel {
             y = startY;
         }
 
-        g.setColor(playerColors[player.playerNumber]);
+        g.setColor(playerColors[player.getPlayerNumber()]);
         g.fillRoundRect(x, y, width, height, 25, 25);
         g.setColor(Color.BLACK);
         g.drawRoundRect(x, y, width, height, 25, 25);
@@ -206,7 +206,7 @@ public class Draw extends JPanel {
         g.drawString("Punkte: " + player.getWinningPoints(), x + distanceToEdges, y + height - distanceToEdges);
 
         g.setColor(Color.WHITE);
-        g.drawString(player.name, x + width - distanceToEdges - textWidth, y + height - distanceToEdges);
+        g.drawString(player.getPlayerName(), x + width - distanceToEdges - textWidth, y + height - distanceToEdges);
 
         drawPlayerCards(g, player, x + distanceToEdges, y + distanceToEdges);
 

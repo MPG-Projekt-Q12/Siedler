@@ -49,7 +49,7 @@ public class Game {
 
         JOptionPane.showMessageDialog(
             null,
-            winner.name + " hat gewonnen!",
+            winner.getPlayerName() + " hat gewonnen!",
             "Spiel beendet",
             JOptionPane.INFORMATION_MESSAGE
         );
@@ -138,7 +138,7 @@ public class Game {
 
     public void updateCurrentPlayerObject(){
         for (Player p : boardfactory.players){
-            if (p.playerNumber == currentPlayer){
+            if (p.getPlayerNumber() == currentPlayer){
 
                 currentPlayerObject = p;
                 return;
@@ -181,7 +181,7 @@ public class Game {
     public Player getPlayerByNumber(int number){
 
         for (Player p : boardfactory.players){
-            if (p.playerNumber == number){
+            if (p.getPlayerNumber() == number){
                 return p;
             }
         }
@@ -195,7 +195,7 @@ public class Game {
 
         int length = 0;
 
-        length = WinningPoints.calculateLongestRoad(player.playerNumber, boardfactory.streets);
+        length = WinningPoints.calculateLongestRoad(player.getPlayerNumber(), boardfactory.streets);
         player.setLongestRoad(length);
 
         if (length >= 5 && length > longestRoadLength) {

@@ -1,18 +1,54 @@
 public class Settlement{
 
-    public int centerx;
-    public int centery;
-    public int owner = 0;
-    public boolean build = false;
-    public boolean city = false;
+    private int centerX;
+    private int centerY;
+    private int owner = 0;
+    private boolean build = false;
+    private boolean city = false;
 
-    public Settlement(int centerx, int centery){
-        this.centerx = centerx;
-        this.centery = centery;
+    public Settlement(int centerX, int centerY){
+        this.centerX = centerX;
+        this.centerY = centerY;
     }
 
-    public void upgradetocity(){
-        city = true;
+    public int getCenterX (){
+        return centerX;
+    }
+
+    public void setCenterX (int centerX){
+        this.centerX = centerX;
+    }
+
+    public int getCenterY (){
+        return centerY;
+    }
+
+    public void setCenterY (int centerY){
+        this.centerY = centerY;
+    }
+
+    public int getOwner (){
+        return owner;
+    }
+
+    public void setOwner (int owner){
+        this.owner = owner;
+    }
+
+    public boolean getBuild (){
+        return build;
+    }
+
+    public void setBuild (boolean build){
+        this.build = build;
+    }
+    
+    public boolean getCity (){
+        return city;
+    }
+
+    public void setCity (boolean city){
+        this.city = city;
     }
 
 }

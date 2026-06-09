@@ -51,7 +51,7 @@ public class OnClick extends MouseAdapter {
                     draw.settlements)) {
 
                     s.build = true;
-                    s.owner = player.playerNumber;
+                    s.owner = player.getPlayerNumber();
                     game.updateWinningPoints();
 
                     turn.waitingForSettlement = false;
@@ -66,7 +66,7 @@ public class OnClick extends MouseAdapter {
                 else if (BuildRules.canBuildSettlement(s, player, draw.settlements, draw.streets)){
 
                     s.build = true;
-                    s.owner = player.playerNumber;
+                    s.owner = player.getPlayerNumber();
 
                     game.updateLongestRoad(player);
                     game.updateWinningPoints();
@@ -105,7 +105,7 @@ public class OnClick extends MouseAdapter {
                     player,
                     draw.settlements)) {
                     s.build = true;
-                    s.owner = player.playerNumber;
+                    s.owner = player.getPlayerNumber();
 
                     game.updateLongestRoad(player);
                     game.updateWinningPoints();
@@ -122,7 +122,7 @@ public class OnClick extends MouseAdapter {
                 else if (BuildRules.canBuildStreet(s, player, draw.settlements, draw.streets)){
 
                     s.build = true;
-                    s.owner = player.playerNumber;
+                    s.owner = player.getPlayerNumber();
 
                     game.updateLongestRoad(player);
                     game.updateWinningPoints();

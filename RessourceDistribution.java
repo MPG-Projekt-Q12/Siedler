@@ -25,7 +25,7 @@ public class RessourceDistribution {
             for (Settlement settlement : settlements) {
 
                 // Muss gebaut sein
-                if (!settlement.build) {
+                if (!settlement.getBuild()) {
                     continue;
                 }
 
@@ -33,15 +33,15 @@ public class RessourceDistribution {
                 double dist = distance(
                         tile.centerx,
                         tile.centery,
-                        settlement.centerx,
-                        settlement.centery
+                        settlement.getCenterX(),
+                        settlement.getCenterY()
                     );
 
                 // Settlement gehört zu diesem Tile
                 if (dist < 120) {
 
                     Player player = getPlayerByNumber(
-                            settlement.owner,
+                            settlement.getOwner(),
                             players
                         );
 
@@ -50,11 +50,11 @@ public class RessourceDistribution {
                     }
 
                     // City = 2 Ressourcen
-                    if (settlement.city) {
+                    if (settlement.getCity()) {
                         player.addResource(tile.resource, 2);
 
                         System.out.println(
-                            player.name + " bekommt 2 "
+                            player.getPlayerName() + " bekommt 2 "
                             + tile.resource
                         );
                     }
@@ -64,7 +64,7 @@ public class RessourceDistribution {
                         player.addResource(tile.resource, 1);
 
                         System.out.println(
-                            player.name + " bekommt 1 "
+                            player.getPlayerName() + " bekommt 1 "
                             + tile.resource
                         );
                     }
@@ -81,7 +81,7 @@ public class RessourceDistribution {
 
         for (Player p : players) {
 
-            if (p.playerNumber == number) {
+            if (p.getPlayerNumber() == number) {
                 return p;
             }
         }

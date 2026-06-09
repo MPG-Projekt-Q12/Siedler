@@ -24,7 +24,7 @@ public class WinningPoints {
             }
         }
         if (game.getLongestRoadOwner() != null
-        && game.getLongestRoadOwner().playerNumber == number){
+        && game.getLongestRoadOwner().getPlayerNumber() == number){
 
             points += 2;
         }
