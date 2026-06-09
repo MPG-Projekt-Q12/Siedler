@@ -29,7 +29,7 @@ public class Draw extends JPanel {
 
     int currentPlayer;
 
-    //Paint
+    // Paint
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -41,7 +41,6 @@ public class Draw extends JPanel {
                 drawStreet(g, s);
             }
         }
-
         for (Settlement s : settlements){
             if (s.build){
                 drawSettlement(g, s);
@@ -52,7 +51,7 @@ public class Draw extends JPanel {
         drawNextButton(g);
     }
 
-    //Daten vom Factory setzen
+    // Daten vom Factory setzen
     public void setData(ArrayList<Tile> t, ArrayList<Street> s, ArrayList<Settlement> se, ArrayList<Player> p) {
         this.tiles = t;
         this.streets = s;
@@ -60,8 +59,13 @@ public class Draw extends JPanel {
         this.players = p;
     }
 
-    //Tile 
+    // Background
+    public void drawBackground(Graphics g) {
+        g.setColor(new Color(200, 230, 255));
+        g.fillRect(0, 0, getWidth(), getHeight());
+    }
 
+    // Tile 
     public void drawTile(Graphics g, Tile tile) {
         drawHexagon(g, tile);
         drawNumberCircle(g, tile);
@@ -94,6 +98,7 @@ public class Draw extends JPanel {
     public void drawNumberCircle(Graphics g, Tile tile) {
         int r = 30;
         int zahl = tile.number;
+
         if (zahl == 0) return;
 
         Rectangle bounds = new Rectangle(tile.centerx - r * 3 / 2 , tile.centery - r * 3 / 2, r * 3, r * 3);
@@ -123,8 +128,7 @@ public class Draw extends JPanel {
         g.drawString(text, tx, ty);
     }
 
-    // ---------------- STREET ----------------
-
+    // Street
     public void drawStreet(Graphics g, Street s) {
 
         Graphics2D g2 = (Graphics2D) g;
@@ -143,8 +147,7 @@ public class Draw extends JPanel {
         g2.setTransform(old);
     }
 
-    // ---------------- SETTLEMENT ----------------
-
+    // Settlement
     public void drawSettlement(Graphics g, Settlement s) {
 
         int radius = s.city ? 20 : 14;
@@ -154,16 +157,95 @@ public class Draw extends JPanel {
         g.setColor(Color.BLACK);
         g.drawOval(s.centerx - radius, s.centery - radius, radius * 2, radius * 2);
     }
+    
+    // Player
+    public void drawPlayer(Graphics g, Player player) {
 
-    // ---------------- COLORS ----------------
+        int startX = 60;
+        int startY = 60;
+        int width = 500;
+        int height = 250;
+        int distanceToEdges = 30;
 
-    public Color getFarbe(int owner) {
-        if (owner < 0 || owner >= playerColors.length) return Color.GRAY;
-        return playerColors[owner];
+        int x;
+        int y;
+
+        g.setFont(new Font("Arial", Font.BOLD, 28));
+
+        FontMetrics fm = g.getFontMetrics();
+
+        int textWidth = fm.stringWidth(player.name);
+        int textHeight = fm.getHeight();
+
+        if (player.playerNumber == 2){
+            x = getWidth() - width - startX;
+            y = startY;
+        }
+        else if (player.playerNumber == 3){
+            x = startX;
+            y = getHeight() - height - startY;
+        }
+        else if (player.playerNumber == 4){
+            x = getWidth() - width - startX;
+            y = getHeight() - height - startY;
+        }
+        else {
+            x = startX;
+            y = startY;
+        }
+
+        g.setColor(playerColors[player.playerNumber]);
+        g.fillRoundRect(x, y, width, height, 25, 25);
+        g.setColor(Color.BLACK);
+        g.drawRoundRect(x, y, width, height, 25, 25);
+
+        g.setColor(Color.BLACK);
+        g.fillRoundRect(x + distanceToEdges / 2, y + height - textHeight - distanceToEdges * 3 / 2 + 5 , width - distanceToEdges, textHeight + distanceToEdges, 20, 20);
+
+        g.setColor(Color.WHITE);
+        g.drawString("Punkte: " + player.winningPoints, x + distanceToEdges, y + height - distanceToEdges);
+
+        g.setColor(Color.WHITE);
+        g.drawString(player.name, x + width - distanceToEdges - textWidth, y + height - distanceToEdges);
+
+        drawPlayerCards(g, player, x + distanceToEdges, y + distanceToEdges);
+
     }
 
-    // ---------------- DICE ----------------
+    public void drawPlayerCards(Graphics g, Player player, int x, int y) {
 
+        int cardWidth = 70;
+        int cardHeight = 100;
+        int spacing = 10;
+
+        Variables.Resource[] res = Variables.Resource.values();
+
+        for (int i = 0; i < res.length - 2; i++) {
+
+            Variables.Resource r = res[i];
+
+            int cardX = x + i * (cardWidth + spacing);
+
+            g.setColor(getResourceColor(r));
+
+            g.fillRoundRect(cardX, y, cardWidth, cardHeight, 12, 12);
+            g.setColor(Color.BLACK);
+            g.drawRoundRect(cardX, y, cardWidth, cardHeight, 12, 12);
+
+            g.setFont(new Font("Arial", Font.BOLD, 40));
+
+            String text = String.valueOf(player.getResource(r));
+
+            FontMetrics fm = g.getFontMetrics();
+
+            int tx = cardX + (cardWidth - fm.stringWidth(text)) / 2;
+            int ty = y + (cardHeight + fm.getAscent()) / 2 - 3;
+
+            g.drawString(text, tx, ty);
+        }
+    }
+    
+    // Dice
     public void drawDice(Graphics g) {
 
         int size = 60;
@@ -239,116 +321,7 @@ public class Draw extends JPanel {
         }
     }
 
-    // Player
-    
-    public void drawPlayer(Graphics g, Player player) {
-
-        int startX = 60;
-        int startY = 60;
-        int width = 500;
-        int height = 250;
-        int distanceToEdges = 30;
-
-        int x;
-        int y;
-
-        g.setFont(new Font("Arial", Font.BOLD, 28));
-
-        FontMetrics fm = g.getFontMetrics();
-
-        int textWidth = fm.stringWidth(player.name);
-        int textHeight = fm.getHeight();
-
-        // Hintergrund
-        if (player.playerNumber == 2){
-            x = getWidth() - width - startX;
-            y = startY;
-        }
-        else if (player.playerNumber == 3){
-            x = startX;
-            y = getHeight() - height - startY;
-        }
-        else if (player.playerNumber == 4){
-            x = getWidth() - width - startX;
-            y = getHeight() - height - startY;
-        }
-        else {
-            x = startX;
-            y = startY;
-        }
-
-        g.setColor(playerColors[player.playerNumber]);
-        g.fillRoundRect(x, y, width, height, 25, 25);
-        g.setColor(Color.BLACK);
-        g.drawRoundRect(x, y, width, height, 25, 25);
-
-        //Schwarzes roundRect
-        g.setColor(Color.BLACK);
-        g.fillRoundRect(x + distanceToEdges / 2, y + height - textHeight - distanceToEdges * 3 / 2 + 5 , width - distanceToEdges, textHeight + distanceToEdges, 20, 20);
-
-        //WinningPoints
-        g.setColor(Color.WHITE);
-        g.drawString("Punkte: " + player.winningPoints, x + distanceToEdges, y + height - distanceToEdges);
-
-        //PlayerName
-        g.setColor(Color.WHITE);
-        g.drawString(player.name, x + width - distanceToEdges - textWidth, y + height - distanceToEdges);
-
-        //Cards
-        drawPlayerCards(g, player, x + distanceToEdges, y + distanceToEdges);
-
-    }
-
-    public void drawPlayerCards(Graphics g, Player player, int x, int y) {
-
-        int cardWidth = 70;
-        int cardHeight = 100;
-        int spacing = 10;
-
-        Variables.Resource[] res = Variables.Resource.values();
-
-        for (int i = 0; i < res.length - 2; i++) {
-
-            Variables.Resource r = res[i];
-
-            int cardX = x + i * (cardWidth + spacing);
-
-            g.setColor(getResourceColor(r));
-
-            g.fillRoundRect(cardX, y, cardWidth, cardHeight, 12, 12);
-            g.setColor(Color.BLACK);
-            g.drawRoundRect(cardX, y, cardWidth, cardHeight, 12, 12);
-
-            g.setFont(new Font("Arial", Font.BOLD, 40));
-
-            String text = String.valueOf(player.getResource(r));
-
-            FontMetrics fm = g.getFontMetrics();
-
-            int tx = cardX + (cardWidth - fm.stringWidth(text)) / 2;
-            int ty = y + (cardHeight + fm.getAscent()) / 2 - 3;
-
-            g.drawString(text, tx, ty);
-        }
-    }
-
-    public void drawBackground(Graphics g) {
-        g.setColor(new Color(200, 230, 255));
-        g.fillRect(0, 0, getWidth(), getHeight());
-    }
-
-    public Color getResourceColor(Variables.Resource r) {
-        return switch (r) {
-            case SHEEP -> new Color(179, 238, 58);
-            case WOOD -> new Color(0, 100, 0);
-            case WHEAT -> new Color(255, 215, 0);
-            case BRICK -> new Color(238, 118, 33);
-            case STONE -> new Color(140, 140, 140);
-            case DESERT -> new Color(236, 219, 160);
-            case DEFAULT -> Color.GRAY;
-        };
-    }
-
+    // Next Button
     public void drawNextButton(Graphics g){
 
         int width = 150;
@@ -377,5 +350,23 @@ public class Draw extends JPanel {
         int ty = y + (height + fm.getAscent()) / 2 - 5;
 
         g.drawString(text, tx, ty);
+    }
+
+    // Helper
+    public Color getResourceColor(Variables.Resource r) {
+        return switch (r) {
+            case SHEEP -> new Color(179, 238, 58);
+            case WOOD -> new Color(0, 100, 0);
+            case WHEAT -> new Color(255, 215, 0);
+            case BRICK -> new Color(238, 118, 33);
+            case STONE -> new Color(140, 140, 140);
+            case DESERT -> new Color(236, 219, 160);
+            case DEFAULT -> Color.GRAY;
+        };
+    }
+
+    public Color getFarbe(int owner) {
+        if (owner < 0 || owner >= playerColors.length) return Color.GRAY;
+        return playerColors[owner];
     }
 }

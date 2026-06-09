@@ -20,7 +20,6 @@ public class Main {
                                 JOptionPane.QUESTION_MESSAGE
                             );
 
-                        // Fenster geschlossen
                         if (input == null){
                             System.exit(0);
                         }
@@ -49,7 +48,6 @@ public class Main {
                                 JOptionPane.QUESTION_MESSAGE
                             );
 
-                            // Abbrechen -> Programm beenden
                             if (name == null){
                                 System.exit(0);
                             }
