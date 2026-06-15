@@ -12,11 +12,14 @@ public class OnClick extends MouseAdapter {
         this.draw = draw;
         this.turn = turn;
         this.game = game;
+        System.out.println("> onClick");
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
 
+        System.out.println("> mouse r");
+        
         Player player = game.getCurrentPlayer();
 
         int mx = e.getX();
@@ -25,8 +28,8 @@ public class OnClick extends MouseAdapter {
         //Next Button
         if (draw.nextButton.contains(mx, my) && turn.waitingForNext) {
 
-            System.out.println("Weiter Button geklickt");
-
+            System.out.println("> next button clicked");
+            
             turn.waitingForNext = false;
 
             game.nextTurn();
@@ -45,10 +48,7 @@ public class OnClick extends MouseAdapter {
                 );
 
             if (dist <= radius){
-                if (turn.waitingForSettlement
-                && BuildRules.canBuildStartSettlement(
-                    s,
-                    draw.settlements)) {
+                if (turn.waitingForSettlement && BuildRules.canBuildStartSettlement(s, draw.settlements)) {
 
                     s.setBuild(true);
                     s.setOwner(player.getPlayerNumber());
@@ -57,8 +57,8 @@ public class OnClick extends MouseAdapter {
                     turn.waitingForSettlement = false;
                     turn.waitingForStreet = true;
 
-                    System.out.println("Settlement gebaut");
-                    System.out.println("Baue jetzt eine Straße");
+                    System.out.println("> settlement build");
+                    System.out.println("build a street!");
 
                     draw.repaint();
                     return;
@@ -71,7 +71,7 @@ public class OnClick extends MouseAdapter {
                     game.updateLongestRoad(player);
                     game.updateWinningPoints();
 
-                    System.out.println("Settlement gebaut");
+                    System.out.println("> street build");
 
                     draw.repaint();
                     return;
@@ -82,7 +82,7 @@ public class OnClick extends MouseAdapter {
 
                     game.updateWinningPoints();
 
-                    System.out.println("City gebaut");
+                    System.out.println("> city gebaut");
 
                     draw.repaint();
                     return;
@@ -93,19 +93,13 @@ public class OnClick extends MouseAdapter {
         //Streets
         for (Street s : draw.streets){
 
-            double dist = Math.hypot(
-                    mx - s.getCenterX(),
-                    my - s.getCenterY()
-                );
+            double dist = Math.hypot(mx - s.getCenterX(), my - s.getCenterY());
 
             if (dist <= 30){
-                if (turn.waitingForStreet
-                && BuildRules.canBuildStartStreet(
-                    s,
-                    player,
-                    draw.settlements)) {
-                    s.build = true;
-                    s.owner = player.getPlayerNumber();
+                if (turn.waitingForStreet && BuildRules.canBuildStartStreet(s, player, draw.settlements)) {
+                    
+                    s.setBuild(true);
+                    s.setOwner(player.getPlayerNumber());
 
                     game.updateLongestRoad(player);
                     game.updateWinningPoints();
@@ -121,8 +115,8 @@ public class OnClick extends MouseAdapter {
                 } 
                 else if (BuildRules.canBuildStreet(s, player, draw.settlements, draw.streets)){
 
-                    s.build = true;
-                    s.owner = player.getPlayerNumber();
+                    s.setBuild(true);
+                    s.setOwner(player.getPlayerNumber());
 
                     game.updateLongestRoad(player);
                     game.updateWinningPoints();

@@ -12,12 +12,12 @@ public class RessourceDistribution {
         for (Tile tile : tiles) {
 
             // Nur passende Zahl
-            if (tile.number != diceNumber) {
+            if (tile.getNumber() != diceNumber) {
                 continue;
             }
 
             // Wüste überspringen
-            if (tile.resource == Variables.Resource.DESERT) {
+            if (tile.getResource() == Variables.Resource.DESERT) {
                 continue;
             }
 
@@ -31,8 +31,8 @@ public class RessourceDistribution {
 
                 // Distanz Settlement <-> Tile
                 double dist = distance(
-                        tile.centerx,
-                        tile.centery,
+                        tile.getCenterX(),
+                        tile.getCenterY(),
                         settlement.getCenterX(),
                         settlement.getCenterY()
                     );
@@ -46,27 +46,20 @@ public class RessourceDistribution {
                         );
 
                     if (player == null) {
+                        
                         continue;
                     }
-
-                    // City = 2 Ressourcen
+                    
                     if (settlement.getCity()) {
-                        player.addResource(tile.resource, 2);
-
-                        System.out.println(
-                            player.getPlayerName() + " bekommt 2 "
-                            + tile.resource
-                        );
+                        
+                        player.addResource(tile.getResource(), 2);
+                        System.out.println(player.getPlayerName() + " bekommt 2 " + tile.getResource());
                     }
-
-                    // Normales Settlement = 1 Ressource
+                    
                     else {
-                        player.addResource(tile.resource, 1);
-
-                        System.out.println(
-                            player.getPlayerName() + " bekommt 1 "
-                            + tile.resource
-                        );
+                        
+                        player.addResource(tile.getResource(), 1);
+                        System.out.println(player.getPlayerName() + " bekommt 1 " + tile.getResource());
                     }
                 }
             }

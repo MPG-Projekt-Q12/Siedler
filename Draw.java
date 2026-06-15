@@ -37,7 +37,7 @@ public class Draw extends JPanel {
         drawBackground(g);
         for (Tile t : tiles) drawTile(g, t);
         for (Street s : streets){
-            if (s.build){
+            if (s.getBuild()){
                 drawStreet(g, s);
             }
         }
@@ -82,13 +82,13 @@ public class Draw extends JPanel {
 
             double angle = Math.toRadians(60 * i - 30);
 
-            xPoints[i] = (int)(tile.centerx + radius * Math.cos(angle));
-            yPoints[i] = (int)(tile.centery + radius * Math.sin(angle));
+            xPoints[i] = (int)(tile.getCenterX() + radius * Math.cos(angle));
+            yPoints[i] = (int)(tile.getCenterY() + radius * Math.sin(angle));
         }
 
         Polygon hex = new Polygon(xPoints, yPoints, 6);
 
-        g.setColor(getResourceColor(tile.resource));
+        g.setColor(getResourceColor(tile.getResource()));
         g.fillPolygon(hex);
 
         g.setColor(Color.BLACK);
@@ -97,11 +97,11 @@ public class Draw extends JPanel {
 
     public void drawNumberCircle(Graphics g, Tile tile) {
         int r = 30;
-        int zahl = tile.number;
+        int zahl = tile.getNumber();
 
         if (zahl == 0) return;
 
-        Rectangle bounds = new Rectangle(tile.centerx - r * 3 / 2 , tile.centery - r * 3 / 2, r * 3, r * 3);
+        Rectangle bounds = new Rectangle(tile.getCenterX() - r * 3 / 2 , tile.getCenterY() - r * 3 / 2, r * 3, r * 3);
 
         int textX = bounds.x + bounds.width / 2;
         int textY = bounds.y + bounds.height / 2;
@@ -139,7 +139,7 @@ public class Draw extends JPanel {
         AffineTransform old = g2.getTransform();
 
         g2.translate(s.getCenterX(), s.getCenterY());
-        g2.rotate(s.angle);
+        g2.rotate(s.getAngle());
         g2.setColor(getFarbe(s.getOwner()));
         g2.fillRect(-length / 2, -thickness / 2, length, thickness);
         g2.setColor(Color.BLACK);

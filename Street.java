@@ -1,10 +1,10 @@
 public class Street{
 
-    public int centerX;
-    public int centerY;
-    public int owner = 0;
-    public double angle;
-    public boolean build = false;
+    private int centerX;
+    private int centerY;
+    private int owner = 0;
+    private double angle;
+    private boolean build = false;
 
     public Street(int x, int y, double angle){
         this.centerX = x;
@@ -42,5 +42,13 @@ public class Street{
 
     public void setBuild (boolean build){
         this.build = build;
+    }
+
+    public double getAngle (){
+        return angle;
+    }
+
+    public void setAngle (double angle){
+        this.angle = angle;
     }
 }

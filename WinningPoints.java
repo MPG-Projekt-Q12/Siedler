@@ -38,7 +38,7 @@ public class WinningPoints {
 
         for (Street start : streets){
 
-            if (start.owner != playerId) continue;
+            if (start.getOwner() != playerId) continue;
 
             best = Math.max(best, dfs(start, playerId, streets, new ArrayList<>()));
         }
@@ -56,7 +56,7 @@ public class WinningPoints {
 
         for (Street next : streets){
 
-            if (next.owner != playerId) continue;
+            if (next.getOwner() != playerId) continue;
             if (visited.contains(next)) continue;
 
             if (connected(current, next)){

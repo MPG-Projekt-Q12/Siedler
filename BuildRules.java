@@ -129,7 +129,7 @@ public class BuildRules {
 
         for (Street street : streets) {
 
-            if (street.owner == player.getPlayerNumber()) {
+            if (street.getOwner() == player.getPlayerNumber()) {
 
                 double dist = distance(settlement.getCenterX(), settlement.getCenterY(), street.getCenterX(), street.getCenterY());
 
@@ -146,7 +146,7 @@ public class BuildRules {
 
     public static boolean isStreetFree(Street street) {
 
-        return !street.build;
+        return !street.getBuild();
     }
 
     public static boolean hasConnectedSettlement(Street street, Player player, ArrayList<Settlement> settlements) {
@@ -170,7 +170,7 @@ public class BuildRules {
 
         for (Street other : streets) {
 
-            if (other != street&& other.owner == player.getPlayerNumber()) {
+            if (other != street&& other.getOwner() == player.getPlayerNumber()) {
 
                 double dist = distance(street.getCenterX(), street.getCenterY(), other.getCenterX(), other.getCenterY());
 

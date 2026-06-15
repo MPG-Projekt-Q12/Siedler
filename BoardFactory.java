@@ -114,8 +114,8 @@ public class BoardFactory {
 
             double angle = Math.toRadians(60 * i - 30);
 
-            int vx = (int)(tile.centerx + radius * Math.cos(angle));
-            int vy = (int)(tile.centery + radius * Math.sin(angle));
+            int vx = (int)(tile.getCenterX() + radius * Math.cos(angle));
+            int vy = (int)(tile.getCenterY() + radius * Math.sin(angle));
 
             boolean exists = false;
 
@@ -145,10 +145,10 @@ public class BoardFactory {
             double a1 = Math.toRadians(60 * i - 30);
             double a2 = Math.toRadians(60 * (i + 1) - 30);
 
-            int x1 = (int)(tile.centerx + radius * Math.cos(a1));
-            int y1 = (int)(tile.centery + radius * Math.sin(a1));
-            int x2 = (int)(tile.centerx + radius * Math.cos(a2));
-            int y2 = (int)(tile.centery + radius * Math.sin(a2));
+            int x1 = (int)(tile.getCenterX() + radius * Math.cos(a1));
+            int y1 = (int)(tile.getCenterY() + radius * Math.sin(a1));
+            int x2 = (int)(tile.getCenterX() + radius * Math.cos(a2));
+            int y2 = (int)(tile.getCenterY() + radius * Math.sin(a2));
 
             int mx = (x1 + x2) / 2;
             int my = (y1 + y2) / 2;
@@ -169,9 +169,7 @@ public class BoardFactory {
             if (!exists) {
 
                 Street street = new Street(mx, my, angle);
-
-                street.build = false;
-
+                street.setBuild(false);
                 streets.add(street);
             }
         }
