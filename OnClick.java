@@ -37,11 +37,11 @@ public class OnClick extends MouseAdapter {
         //Settlements
         for (Settlement s : draw.settlements){
 
-            int radius = s.city ? 20 : 14;
+            int radius = s.getCity() ? 20 : 14;
 
             double dist = Math.hypot(
-                    mx - s.centerx,
-                    my - s.centery
+                    mx - s.getCenterY(),
+                    my - s.getCenterX()
                 );
 
             if (dist <= radius){
@@ -50,8 +50,8 @@ public class OnClick extends MouseAdapter {
                     s,
                     draw.settlements)) {
 
-                    s.build = true;
-                    s.owner = player.getPlayerNumber();
+                    s.setBuild(true);
+                    s.setOwner(player.getPlayerNumber());
                     game.updateWinningPoints();
 
                     turn.waitingForSettlement = false;
@@ -65,8 +65,8 @@ public class OnClick extends MouseAdapter {
                 }
                 else if (BuildRules.canBuildSettlement(s, player, draw.settlements, draw.streets)){
 
-                    s.build = true;
-                    s.owner = player.getPlayerNumber();
+                    s.setBuild(true);
+                    s.setOwner(player.getPlayerNumber());
 
                     game.updateLongestRoad(player);
                     game.updateWinningPoints();
@@ -78,7 +78,7 @@ public class OnClick extends MouseAdapter {
                 }
                 else if (BuildRules.canBuildCity(s, player)){
 
-                    s.city = true;
+                    s.setCity(true);
 
                     game.updateWinningPoints();
 
@@ -94,8 +94,8 @@ public class OnClick extends MouseAdapter {
         for (Street s : draw.streets){
 
             double dist = Math.hypot(
-                    mx - s.centerx,
-                    my - s.centery
+                    mx - s.getCenterX(),
+                    my - s.getCenterY()
                 );
 
             if (dist <= 30){

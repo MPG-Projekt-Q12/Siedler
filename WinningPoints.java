@@ -14,12 +14,12 @@ public class WinningPoints {
         // ---------------- SETTLEMENTS ----------------
         for (Settlement s : settlements){
 
-            if (s.owner != number) continue;
+            if (s.getOwner() != number) continue;
 
-            if (s.city){
+            if (s.getCity()){
                 points += 2;
             }
-            else if (s.build){
+            else if (s.getBuild()){
                 points += 1;
             }
         }
@@ -72,8 +72,8 @@ public class WinningPoints {
     private static boolean connected(Street a, Street b){
 
         return Math.hypot(
-            a.centerx - b.centerx,
-            a.centery - b.centery
+            a.getCenterX() - b.getCenterX(),
+            a.getCenterY() - b.getCenterY()
         ) < 80;
     }
 }

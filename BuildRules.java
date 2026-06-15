@@ -86,7 +86,7 @@ public class BuildRules {
             return false;
         }
 
-        if (settlement.city) {
+        if (settlement.getCity()) {
             return false;
         }
 
@@ -112,9 +112,9 @@ public class BuildRules {
 
         for (Settlement s : settlements) {
 
-            if (s.build) {
+            if (s.getBuild()) {
 
-                double dist = distance(settlement.getCenterX(), settlement.getCenterY(), s.centerx, s.centery);
+                double dist = distance(settlement.getCenterX(), settlement.getCenterY(), s.getCenterX(), s.getCenterY());
 
                 if (dist < 120) {
                     return false;
@@ -131,7 +131,7 @@ public class BuildRules {
 
             if (street.owner == player.getPlayerNumber()) {
 
-                double dist = distance(settlement.getCenterX(), settlement.getCenterY(), street.centerx, street.centery);
+                double dist = distance(settlement.getCenterX(), settlement.getCenterY(), street.getCenterX(), street.getCenterY());
 
                 if (dist < 70) {
                     return true;
@@ -155,7 +155,7 @@ public class BuildRules {
 
             if (settlement.getOwner() == player.getPlayerNumber()) {
 
-                double dist = distance(street.centerx, street.centery, settlement.getCenterX(), settlement.getCenterY());
+                double dist = distance(street.getCenterX(), street.getCenterY(), settlement.getCenterX(), settlement.getCenterY());
 
                 if (dist < 70) {
                     return true;
@@ -172,7 +172,7 @@ public class BuildRules {
 
             if (other != street&& other.owner == player.getPlayerNumber()) {
 
-                double dist = distance(street.centerx, street.centery, other.centerx, other.centery);
+                double dist = distance(street.getCenterX(), street.getCenterY(), other.getCenterX(), other.getCenterY());
 
                 if (dist < 120) {
                     return true;

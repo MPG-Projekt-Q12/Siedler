@@ -120,7 +120,7 @@ public class BoardFactory {
             boolean exists = false;
 
             for (Settlement s : settlements) {
-                if (distance(s.centerx, s.centery, vx, vy) < 5) {
+                if (distance(s.getCenterX(), s.getCenterY(), vx, vy) < 5) {
 
                     exists = true;
                     break;
@@ -130,7 +130,7 @@ public class BoardFactory {
             if (!exists) {
 
                 Settlement settlement = new Settlement(vx, vy);
-                settlement.build = false;
+                settlement.setBuild(false);
                 settlements.add(settlement);
             }
         }
@@ -159,7 +159,7 @@ public class BoardFactory {
 
             for (Street s : streets) {
 
-                if (distance(s.centerx, s.centery, mx, my) < 5) {
+                if (distance(s.getCenterX(), s.getCenterY(), mx, my) < 5) {
 
                     exists = true;
                     break;
