@@ -7,23 +7,28 @@ public class BuildRules {
     public static boolean canBuildSettlement(Settlement settlement, Player player, ArrayList<Settlement> settlements, ArrayList<Street> streets) {
 
         if (!isSettlementFree(settlement)) {
+            System.out.println("> false");
             return false;
         }
 
         if (!hasSettlementResources(player)) {
+            System.out.println("> false");
             return false;
         }
 
         if (!obeysSettlementDistanceRule(settlement, settlements)) {
+            System.out.println("> false");
             return false;
         }
 
         if (!hasConnectedStreet(settlement, player, streets)) {
+            System.out.println("> false");
             return false;
         }
 
         paySettlementResources(player);
-
+        
+        System.out.println("> true");
         return true;
     }
 
@@ -32,13 +37,16 @@ public class BuildRules {
     public static boolean canBuildStartSettlement(Settlement settlement, ArrayList<Settlement> settlements) {
 
         if (!isSettlementFree(settlement)) {
+            System.out.println("> false");
             return false;
         }
 
         if (!obeysSettlementDistanceRule(settlement, settlements)) {
+            System.out.println("> false");
             return false;
         }
 
+        System.out.println("> true");
         return true;
     }
 
@@ -64,7 +72,7 @@ public class BuildRules {
     }
 
     //Startphase Streets
-    
+
     public static boolean canBuildStartStreet(Street street, Player player, ArrayList<Settlement> settlements) {
 
         if (!isStreetFree(street)) {
@@ -100,7 +108,7 @@ public class BuildRules {
     }
 
     //Subfunktions
-    
+
     //Settlement
 
     public static boolean isSettlementFree(Settlement settlement) {
