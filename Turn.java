@@ -3,6 +3,7 @@ public class Turn{
     public boolean waitingForSettlement = false;
     public boolean waitingForStreet = false;
     public boolean waitingForNext = false;
+    public boolean waitingForRobber = false;
 
     public int currentPlayer;
 
@@ -35,10 +36,23 @@ public class Turn{
     public void turn(int playerNumber, Dice dice, Draw draw){
         waitingForNext = false;
         dice.rollDice();
+
+        if(dice.getDiceSum() == 7){
+
+            waitingForRobber = true;
+            waitingForNext = false;
+
+            System.out.println("Setze den Räuber");
+
+            draw.repaint();
+            return;
+        }
+
         RessourceDistribution.distributeResources(dice.getDiceSum(), draw.tiles, draw.settlements, draw.players);
+        
         draw.repaint();
-        System.out.println("Normaler Zug: Spieler " + playerNumber + " ist dran");
         waitingForNext = true;
+        draw.nextButtonReady = true;
     }
 
 }

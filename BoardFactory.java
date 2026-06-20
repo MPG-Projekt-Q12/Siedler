@@ -24,16 +24,16 @@ public class BoardFactory {
         streets.clear();
         settlements.clear();
         players.clear();
-        
+
         System.out.println("> arrays cleared");
-        
+
         int cx = w / 2;
         int cy = h / 2;
 
         List<Variables.Resource> resources = new ArrayList<>();
         List<Integer> numbers = new ArrayList<>(Arrays.asList(Variables.numbers));
         Collections.shuffle(numbers);
-        
+
         System.out.println("> numbers shuffled");
 
         resources.addAll(Arrays.asList(
@@ -58,7 +58,7 @@ public class BoardFactory {
                 Variables.Resource.DESERT
             ));
         Collections.shuffle(resources);
-        
+
         System.out.println("> resources shuffled");
 
         int resourceIndex = 0;
@@ -94,6 +94,9 @@ public class BoardFactory {
                 }
 
                 Tile tile = new Tile(resource, number, x, y);
+                if(resource == Variables.Resource.DESERT){
+                    tile.setRobber(true);
+                }
 
                 tiles.add(tile);
 
@@ -188,7 +191,7 @@ public class BoardFactory {
     }
 
     //Player
-    
+
     public void createPlayer(int number, String name){
 
         Player player = new Player(number, name);

@@ -194,40 +194,31 @@ public class BuildRules {
     //City
 
     public static boolean isOwnSettlement(Settlement settlement, Player player) {
-
+        
         if (!settlement.getBuild()) {
             return false;
         }
-
+        
         return settlement.getOwner() == player.getPlayerNumber();
     }
 
     //Resourcechecks
 
     public static boolean hasSettlementResources(Player player) {
-
-        return player.getResource(Variables.Resource.WOOD) >= 1
-        && player.getResource(Variables.Resource.BRICK) >= 1
-        && player.getResource(Variables.Resource.WHEAT) >= 1
-        && player.getResource(Variables.Resource.SHEEP) >= 1;
+        return player.getResource(Variables.Resource.WOOD) >= 1 && player.getResource(Variables.Resource.BRICK) >= 1 && player.getResource(Variables.Resource.WHEAT) >= 1 && player.getResource(Variables.Resource.SHEEP) >= 1;
     }
 
     public static boolean hasStreetResources(Player player) {
-
-        return player.getResource(Variables.Resource.WOOD) >= 1
-        && player.getResource(Variables.Resource.BRICK) >= 1;
+        return player.getResource(Variables.Resource.WOOD) >= 1 && player.getResource(Variables.Resource.BRICK) >= 1;
     }
 
     public static boolean hasCityResources(Player player) {
-
-        return player.getResource(Variables.Resource.WHEAT) >= 2
-        && player.getResource(Variables.Resource.STONE) >= 3;
+        return player.getResource(Variables.Resource.WHEAT) >= 2 && player.getResource(Variables.Resource.STONE) >= 3;
     }
 
     //Resource payment
 
     public static void paySettlementResources(Player player) {
-
         player.addResource(Variables.Resource.WOOD, -1);
         player.addResource(Variables.Resource.BRICK, -1);
         player.addResource(Variables.Resource.WHEAT, -1);
@@ -235,13 +226,11 @@ public class BuildRules {
     }
 
     public static void payStreetResources(Player player) {
-
         player.addResource(Variables.Resource.WOOD, -1);
         player.addResource(Variables.Resource.BRICK, -1);
     }
 
     public static void payCityResources(Player player) {
-
         player.addResource(Variables.Resource.WHEAT, -2);
         player.addResource(Variables.Resource.STONE, -3);
     }
@@ -249,7 +238,6 @@ public class BuildRules {
     //Helper
 
     public static double distance(int x1, int y1, int x2, int y2) {
-
         return Math.hypot(x1 - x2, y1 - y2);
     }
 }

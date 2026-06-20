@@ -23,6 +23,7 @@ public class Game {
         this.turn = new Turn();
         this.dice = new Dice();
 
+        draw.setGame(this);
         draw.dice = dice;
         draw.addMouseListener(new OnClick(draw, this, turn));
     }

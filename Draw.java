@@ -27,7 +27,11 @@ public class Draw extends JPanel {
 
     Rectangle nextButton;
 
-    int currentPlayer;
+    public int currentPlayer;
+    public boolean nextButtonPressed = false;
+    public boolean nextButtonReady = false;
+
+    private Game game;
 
     // Paint
     @Override
@@ -111,6 +115,17 @@ public class Draw extends JPanel {
         g.setColor(Color.BLACK);
         g.drawOval(textX - r, textY - r, r * 2, r * 2);
 
+        if(tile.getRobber()){
+
+            Graphics2D g2 = (Graphics2D) g;
+            Stroke old = g2.getStroke();
+
+            g2.setColor(Color.BLACK);
+            g2.setStroke(new BasicStroke(6));
+            g2.drawOval(textX - r - 5, textY - r - 5, r * 2 + 10, r * 2 + 10);
+            g2.setStroke(old);
+        }
+
         if (zahl == 6 || zahl == 8) {
             g.setFont(new Font("Arial", Font.BOLD, 44));
             g.setColor(Color.RED);
@@ -157,7 +172,7 @@ public class Draw extends JPanel {
         g.setColor(Color.BLACK);
         g.drawOval(s.getCenterX() - radius, s.getCenterY() - radius, radius * 2, radius * 2);
     }
-    
+
     // Player
     public void drawPlayer(Graphics g, Player player) {
 
@@ -166,16 +181,16 @@ public class Draw extends JPanel {
         int width = 500;
         int height = 250;
         int distanceToEdges = 30;
-
         int x;
         int y;
 
         g.setFont(new Font("Arial", Font.BOLD, 28));
-
         FontMetrics fm = g.getFontMetrics();
 
         int textWidth = fm.stringWidth(player.getPlayerName());
         int textHeight = fm.getHeight();
+
+        String pointsText = "Punkte: " + player.getWinningPoints();
 
         if (player.getPlayerNumber() == 2){
             x = getWidth() - width - startX;
@@ -203,7 +218,21 @@ public class Draw extends JPanel {
         g.fillRoundRect(x + distanceToEdges / 2, y + height - textHeight - distanceToEdges * 3 / 2 + 5 , width - distanceToEdges, textHeight + distanceToEdges, 20, 20);
 
         g.setColor(Color.WHITE);
-        g.drawString("Punkte: " + player.getWinningPoints(), x + distanceToEdges, y + height - distanceToEdges);
+        g.drawString(pointsText, x + distanceToEdges, y + height - distanceToEdges);
+
+        if (game != null
+        && game.getLongestRoadOwner() == player) {
+
+            int iconX = x + distanceToEdges + g.getFontMetrics().stringWidth(pointsText) + 20;
+            int iconY = y + height - distanceToEdges - 10;
+
+            g.setColor(playerColors[player.getPlayerNumber()]);
+            g.fillRect(iconX, iconY, 40, 8);
+            g.setColor(Color.BLACK);
+            g.drawRect(iconX, iconY, 40, 8);
+            g.drawLine(iconX, iconY + 4, iconX - 8, iconY - 4);
+            g.drawLine(iconX + 40, iconY + 4, iconX + 48, iconY - 4);
+        }
 
         g.setColor(Color.WHITE);
         g.drawString(player.getPlayerName(), x + width - distanceToEdges - textWidth, y + height - distanceToEdges);
@@ -244,7 +273,7 @@ public class Draw extends JPanel {
             g.drawString(text, tx, ty);
         }
     }
-    
+
     // Dice
     public void drawDice(Graphics g) {
 
@@ -324,30 +353,43 @@ public class Draw extends JPanel {
     // Next Button
     public void drawNextButton(Graphics g){
 
+        Graphics2D g2 = (Graphics2D) g;
+
         int width = 150;
         int height = 100;
         int x = (getWidth() - width) / 2;
         int y = 50;
 
+        int pressOffset = nextButtonPressed ? 4 : 0;
+
         nextButton = new Rectangle(x, y, width, height);
 
-        //Button
+        if (nextButtonReady && !nextButtonPressed) {
+
+            Composite old = g2.getComposite();
+
+            for (int i = 0; i < 5; i++) {
+
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.08f));
+                g2.setColor(playerColors[currentPlayer]);
+                g2.fillRoundRect(x - 4 - i * 4, y - 4 - i * 4, width + (8 + i * 8), height + (8 + i * 8), 30, 30);
+            }
+
+            g2.setComposite(old);
+        }
+
         g.setColor(playerColors[currentPlayer]);
-        g.fillRoundRect(x, y, width, height, 25, 25);
+        g.fillRoundRect(x, y + pressOffset, width, height, 25, 25);
 
-        //Rand
         g.setColor(Color.BLACK);
-        g.drawRoundRect(x, y, width, height, 25, 25);
+        g.drawRoundRect(x, y + pressOffset, width, height, 25, 25);
 
-        //Text
         g.setFont(new Font("Arial", Font.BOLD, 30));
-
         String text = "Weiter";
-
         FontMetrics fm = g.getFontMetrics();
 
         int tx = x + (width - fm.stringWidth(text)) / 2;
-        int ty = y + (height + fm.getAscent()) / 2 - 5;
+        int ty = y + pressOffset + (height + fm.getAscent()) / 2 - 5;
 
         g.drawString(text, tx, ty);
     }
@@ -368,5 +410,9 @@ public class Draw extends JPanel {
     public Color getFarbe(int owner) {
         if (owner < 0 || owner >= playerColors.length) return Color.GRAY;
         return playerColors[owner];
+    }
+
+    public void setGame(Game game){
+        this.game = game;
     }
 }

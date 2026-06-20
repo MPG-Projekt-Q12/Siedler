@@ -2,6 +2,7 @@ public class Tile {
 
     private Variables.Resource resource;
     private int number;
+    private boolean robber;
 
     private int centerX;
     private int centerY;
@@ -45,4 +46,11 @@ public class Tile {
         this.number = number;
     }
 
+    public boolean getRobber() {
+        return robber;
+    }
+
+    public void setRobber(boolean robber) {
+        this.robber = robber;
+    }
 }

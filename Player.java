@@ -14,7 +14,6 @@ public class Player {
         this.playerNumber = playerNumber;
         this.playerName = playerName;
 
-        // initialisieren
         for (Variables.Resource r : Variables.Resource.values()) {
             resources.put(r, 0);
         }
@@ -28,17 +27,8 @@ public class Player {
         return resources.get(r);
     }
 
-    public void calculateWinningPoints(
-    ArrayList<Settlement> settlements,
-    ArrayList<Street> streets,
-    Game game
-    ){
-        winningPoints = WinningPoints.calculateWinningPoints(
-            playerNumber,
-            settlements,
-            streets,
-            game
-        );
+    public void calculateWinningPoints(ArrayList<Settlement> settlements, ArrayList<Street> streets, Game game){
+        winningPoints = WinningPoints.calculateWinningPoints(playerNumber, settlements, streets, game);
     }
 
     public int getWinningPoints (){
