@@ -43,15 +43,27 @@ public class Main {
 
                         playerNames[i] = name;
                     }
-                    
-                    int maxWinningPoints;
-                    
-                    while (maxWinningPoints.trim().isEmpty()){
 
-                        maxWinningPoints = JOptionPane.showInputDialog(null, "Gewinnpunkte zum Gewinnen: ", "Spielername", JOptionPane.QUESTION_MESSAGE);
+                    int maxWinningPoints = 0;
 
-                        if (maxWinningPoints == 0){
+                    while (true) {
+                        String input = JOptionPane.showInputDialog(null, "Gewinnpunkte zum Gewinnen:", "Spiel", JOptionPane.QUESTION_MESSAGE);
+
+                        if (input == null) {
                             System.exit(0);
+                        }
+
+                        input = input.trim();
+
+                        if (input.isEmpty()) {
+                            continue;
+                        }
+
+                        try {
+                            maxWinningPoints = Integer.parseInt(input);
+                            break;
+                        } catch (NumberFormatException e) {
+                            JOptionPane.showMessageDialog(null, "Bitte gib eine gültige Zahl ein!");
                         }
                     }
 
@@ -70,7 +82,7 @@ public class Main {
 
                     System.out.println("maxwidth = " + frame.getWidth() + " und maxheight = " + frame.getHeight());
 
-                    game.newGame(frame.getWidth(), frame.getHeight(), playerNames);
+                    game.newGame(frame.getWidth(), frame.getHeight(), playerNames, maxWinningPoints);
             });
     }
 }

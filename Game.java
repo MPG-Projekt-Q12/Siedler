@@ -28,9 +28,10 @@ public class Game {
         draw.addMouseListener(new OnClick(draw, this, turn));
     }
 
-    public void newGame(int x, int y, String[] names){
+    public void newGame(int x, int y, String[] names, int maxWinningPoints){
 
         this.names = names;
+        this.maxWinningPoints = maxWinningPoints;
 
         boardfactory.createBoard(x, y, names);
 
