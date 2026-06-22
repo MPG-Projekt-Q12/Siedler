@@ -39,6 +39,7 @@ public class Draw extends JPanel {
         super.paintComponent(g);
 
         drawBackground(g);
+
         for (Tile t : tiles) drawTile(g, t);
         for (Street s : streets){
             if (s.getBuild()){
@@ -51,6 +52,7 @@ public class Draw extends JPanel {
             }
         }
         for (Player p : players) drawPlayer(g, p);
+
         drawDice(g);
         drawNextButton(g);
     }

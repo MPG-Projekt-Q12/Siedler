@@ -3,22 +3,16 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class Main {
-
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(() -> {
 
-                    // Spieleranzahl abfragen
+                    // Splieler initiieren
                     int playerCount = 0;
 
                     while (playerCount < 1 || playerCount > 4){
 
-                        String input = JOptionPane.showInputDialog(
-                                null,
-                                "Wie viele Spieler? (1-4)",
-                                "Catan",
-                                JOptionPane.QUESTION_MESSAGE
-                            );
+                        String input = JOptionPane.showInputDialog(null, "Wie viele Spieler? (1-4)", "Catan", JOptionPane.QUESTION_MESSAGE);
 
                         if (input == null){
                             System.exit(0);
@@ -32,7 +26,6 @@ public class Main {
                         }
                     }
 
-                    // Namen abfragen
                     String[] playerNames = new String[playerCount];
 
                     for (int i = 0; i < playerCount; i++){
@@ -41,12 +34,7 @@ public class Main {
 
                         while (name.trim().isEmpty()){
 
-                            name = JOptionPane.showInputDialog(
-                                null,
-                                "Name von Spieler " + (i + 1),
-                                "Spielername",
-                                JOptionPane.QUESTION_MESSAGE
-                            );
+                            name = JOptionPane.showInputDialog(null, "Name von Spieler " + (i + 1), "Spielername", JOptionPane.QUESTION_MESSAGE);
 
                             if (name == null){
                                 System.exit(0);
@@ -69,11 +57,7 @@ public class Main {
                     // Spiel starten
                     Game game = new Game(draw);
 
-                    game.newGame(
-                        frame.getWidth(),
-                        frame.getHeight(),
-                        playerNames
-                    );
+                    game.newGame(frame.getWidth(), frame.getHeight(), playerNames);
             });
     }
 }

@@ -8,10 +8,10 @@ public class Game {
     private Draw draw;
     private String[] names;
     private Player currentPlayerObject;
+    private Player longestRoadOwner = null;
     private int currentPlayer;
     private int setupPhase = 1;
     private int setupIndex = 1;
-    private Player longestRoadOwner = null;
     private int longestRoadLength = 0;
 
     private boolean gameOver = false;
@@ -42,27 +42,24 @@ public class Game {
         turn.startTurn1(currentPlayer);
     }
 
+    // Game over
     public void setGameOver(){
 
         gameOver = true;
 
         Player winner = getCurrentPlayer();
 
-        JOptionPane.showMessageDialog(
-            null,
-            winner.getPlayerName() + " hat gewonnen!",
-            "Spiel beendet",
-            JOptionPane.INFORMATION_MESSAGE
-        );
+        JOptionPane.showMessageDialog(null, winner.getPlayerName() + " hat gewonnen!", "Spiel beendet", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    // Next turn
     public void nextTurn(){
 
         if (gameOver){
             return;
         }
 
-        // ---------------- STARTPHASE 1 ----------------
+        // Phase 1
         if (setupPhase == 1){
 
             setupIndex++;
@@ -79,21 +76,18 @@ public class Game {
                 return;
             }
 
-            // Wechsel zu Phase 2
             setupPhase = 2;
             setupIndex = names.length;
-
             currentPlayer = setupIndex;
             updateCurrentPlayerObject();
             draw.currentPlayer = currentPlayer;
             draw.repaint();
 
             turn.startTurn2(currentPlayer);
-
             return;
         }
 
-        // ---------------- STARTPHASE 2 ----------------
+        // Phase 2
         if (setupPhase == 2){
 
             setupIndex--;
@@ -106,11 +100,9 @@ public class Game {
                 draw.repaint();
 
                 turn.startTurn2(currentPlayer);
-
                 return;
             }
 
-            // normales Spiel beginnt
             setupPhase = 3;
 
             currentPlayer = 1;
@@ -119,11 +111,10 @@ public class Game {
             draw.repaint();
 
             turn.turn(currentPlayer, dice, draw);
-
             return;
         }
 
-        // ---------------- NORMALES SPIEL ----------------
+        // Normale Phase
         currentPlayer++;
 
         if (currentPlayer > names.length){
@@ -137,6 +128,7 @@ public class Game {
         turn.turn(currentPlayer, dice, draw);
     }
 
+    // Update Sachen
     public void updateCurrentPlayerObject(){
         for (Player p : boardfactory.players){
             if (p.getPlayerNumber() == currentPlayer){
@@ -147,20 +139,10 @@ public class Game {
         }
     }
 
-    public Player getCurrentPlayer(){
-
-        return currentPlayerObject;
-    }
-
     public void updateWinningPoints(){
-
         for (Player p : boardfactory.players){
 
-            p.calculateWinningPoints(
-                boardfactory.settlements,
-                boardfactory.streets,
-                this
-            );
+            p.calculateWinningPoints(boardfactory.settlements, boardfactory.streets, this);
 
             if (p.getWinningPoints() >= 12){
                 setGameOver();
@@ -171,16 +153,7 @@ public class Game {
         draw.repaint();
     }
 
-    public Player getLongestRoadOwner() {
-        return longestRoadOwner;
-    }
-
-    public void setLongestRoadOwner(Player p) {
-        longestRoadOwner = p;
-    }
-
     public Player getPlayerByNumber(int number){
-
         for (Player p : boardfactory.players){
             if (p.getPlayerNumber() == number){
                 return p;
@@ -191,9 +164,6 @@ public class Game {
 
     public void updateLongestRoad(Player player) {
 
-        //Player bestPlayer = null;
-        //int bestLength = longestRoadLength;
-
         int length = 0;
 
         length = WinningPoints.calculateLongestRoad(player.getPlayerNumber(), boardfactory.streets);
@@ -203,5 +173,18 @@ public class Game {
             longestRoadLength = length;
             longestRoadOwner = player;
         }
+    }
+
+    // get und set
+    public Player getLongestRoadOwner() {
+        return longestRoadOwner;
+    }
+
+    public void setLongestRoadOwner(Player p) {
+        longestRoadOwner = p;
+    }
+
+    public Player getCurrentPlayer(){
+        return currentPlayerObject;
     }
 }
