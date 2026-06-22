@@ -14,6 +14,7 @@ public class Game {
     private int setupIndex = 1;
     private int longestRoadLength = 0;
     private boolean gameOver = false;
+    private int maxWinningPoints;
 
     public Game(Draw draw){
 
@@ -143,7 +144,7 @@ public class Game {
 
             p.calculateWinningPoints(boardfactory.settlements, boardfactory.streets, this);
 
-            if (p.getWinningPoints() >= 12){
+            if (p.getWinningPoints() >= maxWinningPoints){
                 setGameOver();
                 return;
             }
@@ -185,5 +186,9 @@ public class Game {
 
     public Player getCurrentPlayer(){
         return currentPlayerObject;
+    }
+    
+    public void setMaxWinningPoints(int maxWinningPoints) {
+        maxWinningPoints = maxWinningPoints;
     }
 }

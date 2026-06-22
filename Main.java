@@ -43,6 +43,17 @@ public class Main {
 
                         playerNames[i] = name;
                     }
+                    
+                    int maxWinningPoints;
+                    
+                    while (maxWinningPoints.trim().isEmpty()){
+
+                        maxWinningPoints = JOptionPane.showInputDialog(null, "Gewinnpunkte zum Gewinnen: ", "Spielername", JOptionPane.QUESTION_MESSAGE);
+
+                        if (maxWinningPoints == 0){
+                            System.exit(0);
+                        }
+                    }
 
                     // Fenster erstellen
                     JFrame frame = new JFrame("Catan");
@@ -56,6 +67,8 @@ public class Main {
 
                     // Spiel starten
                     Game game = new Game(draw);
+
+                    System.out.println("maxwidth = " + frame.getWidth() + " und maxheight = " + frame.getHeight());
 
                     game.newGame(frame.getWidth(), frame.getHeight(), playerNames);
             });
