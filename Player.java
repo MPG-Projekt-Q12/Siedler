@@ -51,15 +51,7 @@ public class Player {
         return playerNumber;
     }
 
-    public void setPlayerNumber (int playerNumber){
-        this.playerNumber = playerNumber;
-    }
-
     public String getPlayerName (){
         return playerName;
-    }
-
-    public void setPlayerName (String playerName){
-        this.playerName = playerName;
     }
 }

@@ -3,9 +3,7 @@ import java.util.ArrayList;
 public class BuildRules {
 
     //Settlements
-
     public static boolean canBuildSettlement(Settlement settlement, Player player, ArrayList<Settlement> settlements, ArrayList<Street> streets) {
-
         if (!isSettlementFree(settlement)) {
             System.out.println("> false");
             return false;
@@ -33,9 +31,7 @@ public class BuildRules {
     }
 
     //Startphase Settlements
-
     public static boolean canBuildStartSettlement(Settlement settlement, ArrayList<Settlement> settlements) {
-
         if (!isSettlementFree(settlement)) {
             System.out.println("> false");
             return false;
@@ -51,9 +47,7 @@ public class BuildRules {
     }
 
     //Streets
-
     public static boolean canBuildStreet(Street street, Player player, ArrayList<Settlement> settlements, ArrayList<Street> streets) {
-
         if (!isStreetFree(street)) {
             return false;
         }
@@ -72,9 +66,7 @@ public class BuildRules {
     }
 
     //Startphase Streets
-
     public static boolean canBuildStartStreet(Street street, Player player, ArrayList<Settlement> settlements) {
-
         if (!isStreetFree(street)) {
             return false;
         }
@@ -87,9 +79,7 @@ public class BuildRules {
     }
 
     //Cities
-
     public static boolean canBuildCity(Settlement settlement, Player player) {
-
         if (!isOwnSettlement(settlement, player)) {
             return false;
         }
@@ -110,16 +100,12 @@ public class BuildRules {
     //Subfunktions
 
     //Settlement
-
     public static boolean isSettlementFree(Settlement settlement) {
-
         return !settlement.getBuild();
     }
 
     public static boolean obeysSettlementDistanceRule(Settlement settlement, ArrayList<Settlement> settlements) {
-
         for (Settlement s : settlements) {
-
             if (s.getBuild()) {
 
                 double dist = distance(settlement.getCenterX(), settlement.getCenterY(), s.getCenterX(), s.getCenterY());
@@ -134,9 +120,7 @@ public class BuildRules {
     }
 
     public static boolean hasConnectedStreet(Settlement settlement, Player player, ArrayList<Street> streets) {
-
         for (Street street : streets) {
-
             if (street.getOwner() == player.getPlayerNumber()) {
 
                 double dist = distance(settlement.getCenterX(), settlement.getCenterY(), street.getCenterX(), street.getCenterY());
@@ -151,16 +135,12 @@ public class BuildRules {
     }
 
     //Street
-
     public static boolean isStreetFree(Street street) {
-
         return !street.getBuild();
     }
 
     public static boolean hasConnectedSettlement(Street street, Player player, ArrayList<Settlement> settlements) {
-
         for (Settlement settlement : settlements) {
-
             if (settlement.getOwner() == player.getPlayerNumber()) {
 
                 double dist = distance(street.getCenterX(), street.getCenterY(), settlement.getCenterX(), settlement.getCenterY());
@@ -175,9 +155,7 @@ public class BuildRules {
     }
 
     public static boolean hasConnectedStreet(Street street, Player player, ArrayList<Street> streets) {
-
         for (Street other : streets) {
-
             if (other != street&& other.getOwner() == player.getPlayerNumber()) {
 
                 double dist = distance(street.getCenterX(), street.getCenterY(), other.getCenterX(), other.getCenterY());
@@ -192,9 +170,7 @@ public class BuildRules {
     }
 
     //City
-
     public static boolean isOwnSettlement(Settlement settlement, Player player) {
-        
         if (!settlement.getBuild()) {
             return false;
         }
@@ -203,7 +179,6 @@ public class BuildRules {
     }
 
     //Resourcechecks
-
     public static boolean hasSettlementResources(Player player) {
         return player.getResource(Variables.Resource.WOOD) >= 1 && player.getResource(Variables.Resource.BRICK) >= 1 && player.getResource(Variables.Resource.WHEAT) >= 1 && player.getResource(Variables.Resource.SHEEP) >= 1;
     }
@@ -217,7 +192,6 @@ public class BuildRules {
     }
 
     //Resource payment
-
     public static void paySettlementResources(Player player) {
         player.addResource(Variables.Resource.WOOD, -1);
         player.addResource(Variables.Resource.BRICK, -1);
@@ -236,7 +210,6 @@ public class BuildRules {
     }
 
     //Helper
-
     public static double distance(int x1, int y1, int x2, int y2) {
         return Math.hypot(x1 - x2, y1 - y2);
     }

@@ -4,7 +4,6 @@ public class Dice {
 
     public int dice1 = 1;
     public int dice2 = 1;
-
     public int sum = 2;
 
     public void rollDice() {

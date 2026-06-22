@@ -4,7 +4,6 @@ public class Turn{
     public boolean waitingForStreet = false;
     public boolean waitingForNext = false;
     public boolean waitingForRobber = false;
-
     public int currentPlayer;
 
     public void startTurn1(int playerNumber){

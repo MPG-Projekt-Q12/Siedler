@@ -13,7 +13,6 @@ public class Game {
     private int setupPhase = 1;
     private int setupIndex = 1;
     private int longestRoadLength = 0;
-
     private boolean gameOver = false;
 
     public Game(Draw draw){

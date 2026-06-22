@@ -173,8 +173,7 @@ public class OnClick extends MouseAdapter {
         }
     }
 
-    //steal 
-
+    // Steal (Robber)
     private void stealRandomResource(Tile robberTile, Player currentPlayer) {
 
         java.util.ArrayList<Player> victims = new java.util.ArrayList<>();

@@ -16,16 +16,8 @@ public class Street{
         return centerX;
     }
 
-    public void setCenterX (int centerX){
-        this.centerX = centerX;
-    }
-
     public int getCenterY (){
         return centerY;
-    }
-
-    public void setCenterY (int centerY){
-        this.centerY = centerY;
     }
 
     public int getOwner (){

@@ -18,32 +18,16 @@ public class Tile {
         return centerX;
     }
 
-    public void setCenterX (int centerX){
-        this.centerX = centerX;
-    }
-
     public int getCenterY (){
         return centerY;
-    }
-
-    public void setCenterY (int centerY){
-        this.centerY = centerY;
     }
 
     public Variables.Resource getResource (){
         return resource;
     }
 
-    public void setResource (Variables.Resource resource){
-        this.resource = resource;
-    }
-
     public int getNumber (){
         return number;
-    }
-
-    public void setNumber (int number){
-        this.number = number;
     }
 
     public boolean getRobber() {

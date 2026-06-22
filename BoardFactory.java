@@ -17,7 +17,6 @@ public class BoardFactory {
     }
 
     //Board
-
     public void createBoard(int w, int h, String[] playerNames) {
 
         tiles.clear();
@@ -65,27 +64,21 @@ public class BoardFactory {
         int numberIndex = 0;
         int[] rowLengths = {3, 4, 5, 4, 3};
         int radius = 80;
-
         double hStep = Math.sqrt(3) * radius;
         double vStep = 1.5 * radius;
-
         double startY = cy - 2 * vStep;
 
         for (int r = 0; r < rowLengths.length; r++) {
 
             int rowLen = rowLengths[r];
-
             double rowWidth = (rowLen - 1) * hStep;
-
             double startX = cx - rowWidth / 2;
 
             for (int c = 0; c < rowLen; c++) {
 
                 int x = (int)(startX + c * hStep);
                 int y = (int)(startY + r * vStep);
-
                 Variables.Resource resource = resources.get(resourceIndex);
-
                 int number = 0;
 
                 if (resource != Variables.Resource.DESERT) {
@@ -116,15 +109,12 @@ public class BoardFactory {
     }
 
     //Settlements
-
     public void createSettlements(Tile tile, int radius) {
         for (int i = 0; i < 6; i++) {
 
             double angle = Math.toRadians(60 * i - 30);
-
             int vx = (int)(tile.getCenterX() + radius * Math.cos(angle));
             int vy = (int)(tile.getCenterY() + radius * Math.sin(angle));
-
             boolean exists = false;
 
             for (Settlement s : settlements) {
@@ -145,28 +135,21 @@ public class BoardFactory {
     }
 
     //Streets
-
     public void createStreets(Tile tile, int radius) {
-
         for (int i = 0; i < 6; i++) {
 
             double a1 = Math.toRadians(60 * i - 30);
             double a2 = Math.toRadians(60 * (i + 1) - 30);
-
             int x1 = (int)(tile.getCenterX() + radius * Math.cos(a1));
             int y1 = (int)(tile.getCenterY() + radius * Math.sin(a1));
             int x2 = (int)(tile.getCenterX() + radius * Math.cos(a2));
             int y2 = (int)(tile.getCenterY() + radius * Math.sin(a2));
-
             int mx = (x1 + x2) / 2;
             int my = (y1 + y2) / 2;
-
             double angle = Math.atan2(y2 - y1, x2 - x1);
-
             boolean exists = false;
 
             for (Street s : streets) {
-
                 if (distance(s.getCenterX(), s.getCenterY(), mx, my) < 5) {
 
                     exists = true;
@@ -184,16 +167,12 @@ public class BoardFactory {
     }
 
     //Helper
-
     public double distance(int x1, int y1, int x2, int y2) {
-
         return Math.hypot(x1 - x2, y1 - y2);
     }
 
     //Player
-
     public void createPlayer(int number, String name){
-
         Player player = new Player(number, name);
         players.add(player);
     }

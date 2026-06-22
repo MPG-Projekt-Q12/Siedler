@@ -15,16 +15,8 @@ public class Settlement{
         return centerX;
     }
 
-    public void setCenterX (int centerX){
-        this.centerX = centerX;
-    }
-
     public int getCenterY (){
         return centerY;
-    }
-
-    public void setCenterY (int centerY){
-        this.centerY = centerY;
     }
 
     public int getOwner (){
@@ -42,7 +34,7 @@ public class Settlement{
     public void setBuild (boolean build){
         this.build = build;
     }
-    
+
     public boolean getCity (){
         return city;
     }

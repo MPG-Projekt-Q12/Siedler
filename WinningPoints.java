@@ -2,20 +2,15 @@ import java.util.ArrayList;
 
 public class WinningPoints {
 
-    public static int calculateWinningPoints(
-    int number,
-    ArrayList<Settlement> settlements,
-    ArrayList<Street> streets,
-    Game game
-    ){
+    public static int calculateWinningPoints(int number, ArrayList<Settlement> settlements, ArrayList<Street> streets, Game game){
 
         int points = 0;
 
-        // ---------------- SETTLEMENTS ----------------
+        // Settlements
         for (Settlement s : settlements){
 
             if (s.getOwner() != number) continue;
-
+            
             if (s.getCity()){
                 points += 2;
             }
@@ -23,9 +18,8 @@ public class WinningPoints {
                 points += 1;
             }
         }
-        if (game.getLongestRoadOwner() != null
-        && game.getLongestRoadOwner().getPlayerNumber() == number){
-
+        
+        if (game.getLongestRoadOwner() != null && game.getLongestRoadOwner().getPlayerNumber() == number){
             points += 2;
         }
 
@@ -37,7 +31,6 @@ public class WinningPoints {
         int best = 0;
 
         for (Street start : streets){
-
             if (start.getOwner() != playerId) continue;
 
             best = Math.max(best, dfs(start, playerId, streets, new ArrayList<>()));
@@ -46,12 +39,9 @@ public class WinningPoints {
         return best;
     }
 
-    private static int dfs(Street current, int playerId,
-    ArrayList<Street> streets,
-    ArrayList<Street> visited){
+    private static int dfs(Street current, int playerId, ArrayList<Street> streets, ArrayList<Street> visited){
 
         visited.add(current);
-
         int max = 0;
 
         for (Street next : streets){
@@ -70,10 +60,6 @@ public class WinningPoints {
     }
 
     private static boolean connected(Street a, Street b){
-
-        return Math.hypot(
-            a.getCenterX() - b.getCenterX(),
-            a.getCenterY() - b.getCenterY()
-        ) < 80;
+        return Math.hypot(a.getCenterX() - b.getCenterX(), a.getCenterY() - b.getCenterY()) < 80;
     }
 }
