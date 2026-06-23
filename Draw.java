@@ -2,7 +2,6 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-//für die Bilder der Tiles & PlayerCards
 import java.io.File;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -17,7 +16,7 @@ public class Draw extends JPanel {
     private BufferedImage brickTexture;
     private BufferedImage stoneTexture;
     private BufferedImage desertTexture;
-    
+
     ArrayList<Tile> tiles = new ArrayList<>();
     ArrayList<Street> streets = new ArrayList<>();
     ArrayList<Settlement> settlements = new ArrayList<>();
@@ -45,20 +44,6 @@ public class Draw extends JPanel {
     public boolean nextButtonReady = false;
 
     private Game game;
-    
-    public Draw() {
-        try {
-            woodTexture = ImageIO.read(new File("img/wood.jpg"));
-            sheepTexture = ImageIO.read(new File("img/sheep.jpg"));
-            wheatTexture = ImageIO.read(new File("img/wheat.jpg"));
-            brickTexture = ImageIO.read(new File("img/brick.jpg"));
-            stoneTexture = ImageIO.read(new File("img/stone.jpg"));
-            desertTexture = ImageIO.read(new File("img/desert.jpg"));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     // Paint
     @Override
@@ -120,30 +105,18 @@ public class Draw extends JPanel {
         }
 
         Polygon hex = new Polygon(xPoints, yPoints, 6);
-
         Graphics2D g2 = (Graphics2D) g;
-        
         Shape oldClip = g2.getClip();
-        
         g2.setClip(hex);
-        
         BufferedImage texture = getResourceTexture(tile.getResource());
-        
+
         if (texture != null) {
-        
-            g2.drawImage(
-                texture,
-                tile.getCenterX() - radius,
-                tile.getCenterY() - radius,
-                radius * 2,
-                radius * 2,
-                null
-            );
+            g2.drawImage(texture, tile.getCenterX() - radius, tile.getCenterY() - radius, radius * 2, radius * 2, null);
         } else {
             g2.setColor(getResourceColor(tile.getResource()));
             g2.fillPolygon(hex);
         }
-        
+
         g2.setClip(oldClip);
 
         g.setColor(Color.BLACK);
@@ -160,9 +133,9 @@ public class Draw extends JPanel {
 
         int textX = bounds.x + bounds.width / 2;
         int textY = bounds.y + bounds.height / 2;
-        
+
         Graphics2D g3 = (Graphics2D) g;
-        
+
         g3.setColor(new Color(255, 255, 255, 180));
         g.fillOval(textX - r, textY - r, r * 2, r * 2);
         g.setColor(Color.BLACK);
@@ -266,10 +239,8 @@ public class Draw extends JPanel {
         g.fillRoundRect(x, y, width, height, 25, 25);
         g.setColor(Color.BLACK);
         g.drawRoundRect(x, y, width, height, 25, 25);
-
         g.setColor(Color.BLACK);
         g.fillRoundRect(x + distanceToEdges / 2, y + height - textHeight - distanceToEdges * 3 / 2 + 5 , width - distanceToEdges, textHeight + distanceToEdges, 20, 20);
-
         g.setColor(Color.WHITE);
         g.drawString(pointsText, x + distanceToEdges, y + height - distanceToEdges);
 
@@ -307,39 +278,25 @@ public class Draw extends JPanel {
             Variables.Resource r = res[i];
 
             int cardX = x + i * (cardWidth + spacing);
-            
+
             Graphics2D g2 = (Graphics2D) g;
-            
+
             BufferedImage texture = getResourceTexture(r);
-            
             Shape oldClip = g2.getClip();
-            
-            RoundRectangle2D cardShape =
-                    new RoundRectangle2D.Double(
-                            cardX, y,
-                            cardWidth, cardHeight,
-                            12, 12);
-            
+            RoundRectangle2D cardShape = new RoundRectangle2D.Double(cardX, y, cardWidth, cardHeight, 12, 12);
+
             g2.setClip(cardShape);
-            
+
             if (texture != null) {
-                g2.drawImage(
-                        texture,
-                        cardX,
-                        y,
-                        cardWidth,
-                        cardHeight,
-                        null);
+                g2.drawImage(texture, cardX, y, cardWidth, cardHeight, null);
             } else {
                 g2.setColor(getResourceColor(r));
                 g2.fill(cardShape);
             }
-            
+
             g2.setClip(oldClip);
-            
             g2.setColor(Color.BLACK);
             g2.draw(cardShape);
-
             g.setFont(new Font("Arial", Font.BOLD, 40));
 
             String text = String.valueOf(player.getResource(r));
@@ -438,7 +395,6 @@ public class Draw extends JPanel {
         int height = 100;
         int x = (getWidth() - width) / 2;
         int y = 50;
-
         int pressOffset = nextButtonPressed ? 4 : 0;
 
         nextButton = new Rectangle(x, y, width, height);
@@ -485,7 +441,21 @@ public class Draw extends JPanel {
             case DEFAULT -> Color.GRAY;
         };
     }
-    
+
+    public Draw() {
+        try {
+            woodTexture = ImageIO.read(new File("img/wood.jpg"));
+            sheepTexture = ImageIO.read(new File("img/sheep.jpg"));
+            wheatTexture = ImageIO.read(new File("img/wheat.jpg"));
+            brickTexture = ImageIO.read(new File("img/brick.jpg"));
+            stoneTexture = ImageIO.read(new File("img/stone.jpg"));
+            desertTexture = ImageIO.read(new File("img/desert.jpg"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public BufferedImage getResourceTexture(Variables.Resource r) {
         return switch (r) {
             case SHEEP -> sheepTexture;
