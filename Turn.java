@@ -6,33 +6,29 @@ public class Turn{
     public boolean waitingForRobber = false;
     public int currentPlayer;
 
-    public void startTurn1(int playerNumber){
+    public void startTurn1(int playerNumber, Game game){
 
         currentPlayer = playerNumber;
 
         waitingForNext = false;
         waitingForSettlement = true;
         waitingForStreet = false;
-        waitingForNext = false;
 
-        System.out.println("Startphase 1: Spieler  " + playerNumber + " ist dran");
-        System.out.println("Baue ein Settlement");
+        game.addConsole("Baue ein Settlement");
     }
 
-    public void startTurn2(int playerNumber){
+    public void startTurn2(int playerNumber, Game game){
 
         currentPlayer = playerNumber;
 
         waitingForNext = false;
         waitingForSettlement = true;
         waitingForStreet = false;
-        waitingForNext = false;
 
-        System.out.println("Startphase 2: Spieler  " + playerNumber + " ist dran");
-        System.out.println("Baue ein Settlement");
+        game.addConsole("Baue ein Settlement");
     }
 
-    public void turn(int playerNumber, Dice dice, Draw draw){
+    public void turn(int playerNumber, Dice dice, Draw draw, Game game){
         waitingForNext = false;
         dice.rollDice();
 
@@ -41,13 +37,13 @@ public class Turn{
             waitingForRobber = true;
             waitingForNext = false;
 
-            System.out.println("Setze den Räuber");
+            game.addConsole("Setze den Räuber");
 
             draw.repaint();
             return;
         }
 
-        RessourceDistribution.distributeResources(dice.getDiceSum(), draw.tiles, draw.settlements, draw.players);
+        RessourceDistribution.distributeResources(dice.getDiceSum(), draw.tiles, draw.settlements, draw.players, game);
         
         draw.repaint();
         waitingForNext = true;

@@ -1,13 +1,7 @@
 import java.util.ArrayList;
 
 public class RessourceDistribution {
-
-    public static void distributeResources(
-    int diceNumber,
-    ArrayList<Tile> tiles,
-    ArrayList<Settlement> settlements,
-    ArrayList<Player> players) {
-
+    public static void distributeResources(int diceNumber, ArrayList<Tile> tiles, ArrayList<Settlement> settlements, ArrayList<Player> players, Game game) {
         for (Tile tile : tiles) {
 
             if (tile.getNumber() != diceNumber) {
@@ -42,13 +36,13 @@ public class RessourceDistribution {
                     if (settlement.getCity()) {
 
                         player.addResource(tile.getResource(), 2);
-                        System.out.println(player.getPlayerName() + " bekommt 2 " + tile.getResource());
+                        game.addConsole(player.getPlayerName() + " bekommt 2 " + tile.getResource());
                     }
 
                     else {
 
                         player.addResource(tile.getResource(), 1);
-                        System.out.println(player.getPlayerName() + " bekommt 1 " + tile.getResource());
+                        game.addConsole(player.getPlayerName() + " bekommt 1 " + tile.getResource());
                     }
                 }
             }

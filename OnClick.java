@@ -1,18 +1,20 @@
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Rectangle;
 
 public class OnClick extends MouseAdapter {
 
     private Draw draw;
     private Turn turn;
     private Game game;
+    private Robber robber;
 
-    public OnClick(Draw draw, Game game, Turn turn){
+    public OnClick(Draw draw, Game game, Turn turn, Robber robber){
 
         this.draw = draw;
         this.turn = turn;
         this.game = game;
-        System.out.println("> onClick");
+        this.robber = robber;
     }
 
     @Override
@@ -20,13 +22,11 @@ public class OnClick extends MouseAdapter {
 
         Player player = game.getCurrentPlayer();
 
-        int mx = e.getX();
-        int my = e.getY();
-
-        System.out.println("> clicked at " + mx + "/" + my);
+        int mx = (int)((e.getX() - draw.getOffsetX()) / draw.getScale());
+        int my = (int)((e.getY() - draw.getOffsetY()) / draw.getScale());
 
         //Next Button
-        if (draw.nextButton.contains(mx, my) && turn.waitingForNext) {
+        if (draw.nextButton.contains(mx, my) && turn.waitingForNext && game.getTradeState() == Variables.TradeState.NONE) {
 
             draw.nextButtonPressed = true;
             draw.repaint();
@@ -48,7 +48,7 @@ public class OnClick extends MouseAdapter {
             return;
         }
 
-        // robber
+        // Robber
         if (turn.waitingForRobber) {
 
             for (Tile tile : draw.tiles) {
@@ -62,7 +62,8 @@ public class OnClick extends MouseAdapter {
                 if (dist <= 30) {
 
                     if (tile.getRobber()) {
-                        System.out.println("Der Räuber steht bereits dort.");
+                        game.addConsole("Der Räuber steht bereits dort.");
+
                         return;
                     }
 
@@ -71,18 +72,17 @@ public class OnClick extends MouseAdapter {
                     }
 
                     tile.setRobber(true);
-                    stealRandomResource(tile, player);
+                    robber.stealRandomResource(tile, player, game);
                     turn.waitingForRobber = false;
                     turn.waitingForNext = true;
                     draw.nextButtonReady = true;
-                    System.out.println("> robber moved");
                     draw.repaint();
                     return;
                 }
             }
         }
 
-        //Settlements
+        // Settlements
         for (Settlement s : draw.settlements){
 
             int radius = s.getCity() ? 20 : 14;
@@ -90,7 +90,7 @@ public class OnClick extends MouseAdapter {
             double dist = Math.hypot(mx - s.getCenterX(), my - s.getCenterY());
 
             if (dist <= radius){
-                if (turn.waitingForSettlement && BuildRules.canBuildStartSettlement(s, draw.settlements)) {
+                if (turn.waitingForSettlement && BuildRules.canBuildStartSettlement(s, draw.settlements, game)) {
 
                     s.setBuild(true);
                     s.setOwner(player.getPlayerNumber());
@@ -99,21 +99,18 @@ public class OnClick extends MouseAdapter {
                     turn.waitingForSettlement = false;
                     turn.waitingForStreet = true;
 
-                    System.out.println("> settlement build");
-                    System.out.println("build a street!");
+                    game.addConsole("Baue eine Straße!");
 
                     draw.repaint();
                     return;
                 }
-                else if (BuildRules.canBuildSettlement(s, player, draw.settlements, draw.streets)){
+                else if (BuildRules.canBuildSettlement(s, player, draw.settlements, draw.streets, game)){
 
                     s.setBuild(true);
                     s.setOwner(player.getPlayerNumber());
 
                     game.updateLongestRoad(player);
                     game.updateWinningPoints();
-
-                    System.out.println("> settlement build");
 
                     draw.repaint();
                     return;
@@ -124,15 +121,13 @@ public class OnClick extends MouseAdapter {
 
                     game.updateWinningPoints();
 
-                    System.out.println("> city gebaut");
-
                     draw.repaint();
                     return;
                 }
             }
         }
 
-        //Streets
+        // Streets
         for (Street s : draw.streets){
 
             double dist = Math.hypot(mx - s.getCenterX(), my - s.getCenterY());
@@ -150,9 +145,6 @@ public class OnClick extends MouseAdapter {
                     turn.waitingForNext = true;
                     draw.nextButtonReady = true;
 
-                    System.out.println("> street build");
-                    System.out.println("> next button ready");
-
                     draw.repaint();
                     return;
                 } 
@@ -164,74 +156,110 @@ public class OnClick extends MouseAdapter {
                     game.updateLongestRoad(player);
                     game.updateWinningPoints();
 
-                    System.out.println("> street build");
-
                     draw.repaint();
                     return;
                 }
             }
         }
-    }
 
-    // Steal (Robber)
-    private void stealRandomResource(Tile robberTile, Player currentPlayer) {
+        if (game.getTradeState() == Variables.TradeState.NONE && !turn.waitingForRobber) {
+            for (int i = 0; i < draw.tradeTargets.size(); i++) {
 
-        java.util.ArrayList<Player> victims = new java.util.ArrayList<>();
+                Rectangle r = draw.tradeTargets.get(i);
 
-        for (Settlement settlement : draw.settlements) {
+                if (r.contains(mx, my)) {
+                    if (i <
+                    draw.players.size() - 1) {
 
-            if (!settlement.getBuild()) {
-                continue;
-            }
+                        Player other = game.getTradePlayerByIndex(i);
+                        game.setSelectedTradeTarget(other.getPlayerNumber());
+                        game.setCurrentTrade(new Trade(game.getCurrentPlayer(),other));
+                    }
+                    else {
 
-            if (settlement.getOwner() == currentPlayer.getPlayerNumber()) {
-                continue;
-            }
-
-            double dist = Math.hypot(robberTile.getCenterX() - settlement.getCenterX(), robberTile.getCenterY() - settlement.getCenterY());
-
-            if (dist < 120) {
-                Player victim = game.getPlayerByNumber(settlement.getOwner());
-
-                if (victim != null && !victims.contains(victim)) {
-                    victims.add(victim);
+                        game.setSelectedTradeTarget(0);
+                        game.setCurrentTrade(new Trade(game.getCurrentPlayer(),null));
+                    }
+                    game.setTradeState(Variables.TradeState.EDIT);
+                    draw.repaint();
+                    return;
                 }
             }
         }
 
-        if (victims.isEmpty()) {
-            System.out.println("Niemand zum Beklauen gefunden.");
-            return;
-        }
+        for (int i = 0; i < 5; i++) {
 
-        Player victim = victims.get((int)(Math.random() * victims.size()));
+            Variables.Resource r = Variables.Resource.values()[i];
 
-        java.util.ArrayList<Variables.Resource>
-        availableResources = new java.util.ArrayList<>();
+            if (draw.plusButtonsTop.get(i).contains(mx, my)) {
 
-        for (Variables.Resource r :
-        Variables.Resource.values()) {
-
-            if (r == Variables.Resource.DESERT || r == Variables.Resource.DEFAULT) {
-                continue;
+                game.getCurrentTrade().addFromGives(r, 1);
+                draw.repaint();
+                return;
             }
 
-            if (victim.getResource(r) > 0) {
-                availableResources.add(r);
+            if (draw.minusButtonsTop.get(i).contains(mx, my)) {
+
+                game.getCurrentTrade().addFromGives(r, -1);
+                draw.repaint();
+                return;
             }
         }
 
-        if (availableResources.isEmpty()) {
+        for (int i = 0; i < 5; i++) {
 
-            System.out.println(victim.getPlayerName() + " hat keine Ressourcen.");
-            return;
+            Variables.Resource r = Variables.Resource.values()[i];
+
+            if (draw.plusButtonsBottom.get(i).contains(mx, my)) {
+
+                game.getCurrentTrade().addToGives(r, 1);
+                draw.repaint();
+                return;
+            }
+
+            if (draw.minusButtonsBottom.get(i).contains(mx, my)) {
+
+                game.getCurrentTrade().addToGives(r, -1);
+                draw.repaint();
+                return;
+            }
         }
 
-        Variables.Resource stolen = availableResources.get((int)(Math.random() * availableResources.size()));
+        if (draw.tradeOkButton.contains(mx, my)) {
 
-        victim.addResource(stolen, -1);
-        currentPlayer.addResource(stolen, 1);
+            Trade trade = game.getCurrentTrade();
 
-        System.out.println(currentPlayer.getPlayerName() + " klaut 1 " + stolen + " von " + victim.getPlayerName());
+            if (game.getSelectedTradeTarget() == 0) {
+
+                if (!trade.canExecuteBankTrade()) {
+                    return;
+                }
+
+            } else {
+
+                if (!trade.canExecute()) {
+                    return;
+                }
+            }
+
+            trade.execute();
+
+            game.setTradeState(Variables.TradeState.NONE);
+            game.setCurrentTrade(null);
+            game.setSelectedTradeTarget(-1);
+
+            draw.repaint();
+            return;
+        }
+        
+        if (draw.tradeCancelButton.contains(mx, my)) {
+
+            game.setTradeState(Variables.TradeState.NONE);
+            game.setCurrentTrade(null);
+            game.setSelectedTradeTarget(-1);
+
+            draw.repaint();
+            return;
+        }
     }
 }

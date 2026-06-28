@@ -17,4 +17,9 @@ public class Variables{
         DESERT,
         DEFAULT
     }
+    public enum TradeState {
+        NONE,
+        EDIT,
+        WAITING
+    }
 }

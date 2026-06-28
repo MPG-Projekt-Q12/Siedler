@@ -3,46 +3,44 @@ import java.util.ArrayList;
 public class BuildRules {
 
     //Settlements
-    public static boolean canBuildSettlement(Settlement settlement, Player player, ArrayList<Settlement> settlements, ArrayList<Street> streets) {
+    public static boolean canBuildSettlement(Settlement settlement, Player player, ArrayList<Settlement> settlements, ArrayList<Street> streets, Game game) {
         if (!isSettlementFree(settlement)) {
-            System.out.println("> false");
+            game.addConsole("Hier steht schon eine Siedlung");
             return false;
         }
 
         if (!hasSettlementResources(player)) {
-            System.out.println("> false");
+            game.addConsole("Du hast nicht genug Ressourcen");
             return false;
         }
 
         if (!obeysSettlementDistanceRule(settlement, settlements)) {
-            System.out.println("> false");
+            game.addConsole("Eine andere Siedlung ist zu nah");
             return false;
         }
 
         if (!hasConnectedStreet(settlement, player, streets)) {
-            System.out.println("> false");
+            game.addConsole("Hier ist keine Straße angrenzend");
             return false;
         }
 
         paySettlementResources(player);
         
-        System.out.println("> true");
         return true;
     }
 
     //Startphase Settlements
-    public static boolean canBuildStartSettlement(Settlement settlement, ArrayList<Settlement> settlements) {
+    public static boolean canBuildStartSettlement(Settlement settlement, ArrayList<Settlement> settlements, Game game) {
         if (!isSettlementFree(settlement)) {
-            System.out.println("> false");
+            game.addConsole("Hier steht schon eine Siedlung");
             return false;
         }
 
         if (!obeysSettlementDistanceRule(settlement, settlements)) {
-            System.out.println("> false");
+            game.addConsole("Eine andere Siedlung ist zu nah");
             return false;
         }
 
-        System.out.println("> true");
         return true;
     }
 

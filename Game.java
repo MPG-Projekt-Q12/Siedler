@@ -1,4 +1,5 @@
 import javax.swing.JOptionPane;
+import java.util.ArrayList;
 
 public class Game {
 
@@ -6,6 +7,7 @@ public class Game {
     private Turn turn;
     private Dice dice;
     private Draw draw;
+    private Robber robber;
     private String[] names;
     private Player currentPlayerObject;
     private Player longestRoadOwner = null;
@@ -15,6 +17,10 @@ public class Game {
     private int longestRoadLength = 0;
     private boolean gameOver = false;
     private int maxWinningPoints;
+    private int selectedTradeTarget = -1;
+    private Trade currentTrade;
+    private Variables.TradeState tradeState = Variables.TradeState.NONE;
+    private ArrayList<String> console = new ArrayList<>();
 
     public Game(Draw draw){
 
@@ -22,10 +28,11 @@ public class Game {
         this.boardfactory = new BoardFactory(draw);
         this.turn = new Turn();
         this.dice = new Dice();
+        this.robber = new Robber();
 
         draw.setGame(this);
         draw.dice = dice;
-        draw.addMouseListener(new OnClick(draw, this, turn));
+        draw.addMouseListener(new OnClick(draw, this, turn, robber));
     }
 
     public void newGame(int x, int y, String[] names, int maxWinningPoints){
@@ -40,7 +47,7 @@ public class Game {
         draw.currentPlayer = currentPlayer;
         draw.repaint();
 
-        turn.startTurn1(currentPlayer);
+        turn.startTurn1(currentPlayer, this);
     }
 
     // Game over
@@ -55,16 +62,12 @@ public class Game {
 
     // Next turn
     public void nextTurn(){
-
         if (gameOver){
             return;
         }
 
-        // Phase 1
         if (setupPhase == 1){
-
             setupIndex++;
-
             if (setupIndex <= names.length){
 
                 currentPlayer = setupIndex;
@@ -72,11 +75,10 @@ public class Game {
                 draw.currentPlayer = currentPlayer;
                 draw.repaint();
 
-                turn.startTurn1(currentPlayer);
+                turn.startTurn1(currentPlayer, this);
 
                 return;
             }
-
             setupPhase = 2;
             setupIndex = names.length;
             currentPlayer = setupIndex;
@@ -84,15 +86,12 @@ public class Game {
             draw.currentPlayer = currentPlayer;
             draw.repaint();
 
-            turn.startTurn2(currentPlayer);
+            turn.startTurn2(currentPlayer, this);
             return;
         }
 
-        // Phase 2
         if (setupPhase == 2){
-
             setupIndex--;
-
             if (setupIndex >= 1){
 
                 currentPlayer = setupIndex;
@@ -100,10 +99,9 @@ public class Game {
                 draw.currentPlayer = currentPlayer;
                 draw.repaint();
 
-                turn.startTurn2(currentPlayer);
+                turn.startTurn2(currentPlayer, this);
                 return;
             }
-
             setupPhase = 3;
 
             currentPlayer = 1;
@@ -111,29 +109,26 @@ public class Game {
             draw.currentPlayer = currentPlayer;
             draw.repaint();
 
-            turn.turn(currentPlayer, dice, draw);
+            turn.turn(currentPlayer, dice, draw, this);
             return;
         }
-
-        // Normale Phase
         currentPlayer++;
 
         if (currentPlayer > names.length){
             currentPlayer = 1;
         }
-
         updateCurrentPlayerObject();
         draw.currentPlayer = currentPlayer;
         draw.repaint();
 
-        turn.turn(currentPlayer, dice, draw);
+        turn.turn(currentPlayer, dice, draw, this);
     }
 
     // Update Sachen
     public void updateCurrentPlayerObject(){
         for (Player p : boardfactory.players){
             if (p.getPlayerNumber() == currentPlayer){
-
+                
                 currentPlayerObject = p;
                 return;
             }
@@ -177,6 +172,17 @@ public class Game {
     }
 
     // get und set
+    public void addConsole(String text) {
+        console.add(text);
+        if (console.size() > 15) {
+            console.remove(0);
+        }
+    }
+
+    public ArrayList<String> getConsole() {
+        return console;
+    }
+
     public Player getLongestRoadOwner() {
         return longestRoadOwner;
     }
@@ -188,8 +194,57 @@ public class Game {
     public Player getCurrentPlayer(){
         return currentPlayerObject;
     }
-    
+
     public void setMaxWinningPoints(int maxWinningPoints) {
         maxWinningPoints = maxWinningPoints;
+    }
+
+    public Trade getCurrentTrade() {
+        return currentTrade;
+    }
+
+    public void setCurrentTrade(Trade trade) {
+        this.currentTrade = trade;
+    }
+
+    public Variables.TradeState getTradeState() {
+        return tradeState;
+    }
+
+    public void setTradeState(Variables.TradeState tradeState) {
+        this.tradeState = tradeState;
+    }
+
+    public int getSelectedTradeTarget() {
+        return selectedTradeTarget;
+    }
+
+    public void setSelectedTradeTarget(int selectedTradeTarget) {
+        this.selectedTradeTarget = selectedTradeTarget;
+    }
+
+    public ArrayList<Settlement> getSettlements() {
+        return boardfactory.settlements;
+    }
+
+    public Player getTradePlayerByIndex(int index) {
+
+        int current = currentPlayerObject.getPlayerNumber();
+        int counter = 0;
+
+        for (Player p : boardfactory.players) {
+
+            if (p.getPlayerNumber() == current) {
+                continue;
+            }
+
+            if (counter == index) {
+                return p;
+            }
+
+            counter++;
+        }
+
+        return null;
     }
 }

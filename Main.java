@@ -80,9 +80,8 @@ public class Main {
                     // Spiel starten
                     Game game = new Game(draw);
 
-                    System.out.println("maxwidth = " + frame.getWidth() + " und maxheight = " + frame.getHeight());
-
-                    game.newGame(frame.getWidth(), frame.getHeight(), playerNames, maxWinningPoints);
+                    game.newGame(1920, 1080, playerNames, maxWinningPoints);
+                    game.addConsole("Spiel gestartet");
             });
     }
 }

@@ -24,16 +24,12 @@ public class BoardFactory {
         settlements.clear();
         players.clear();
 
-        System.out.println("> arrays cleared");
-
         int cx = w / 2;
         int cy = h / 2;
 
         List<Variables.Resource> resources = new ArrayList<>();
         List<Integer> numbers = new ArrayList<>(Arrays.asList(Variables.numbers));
         Collections.shuffle(numbers);
-
-        System.out.println("> numbers shuffled");
 
         resources.addAll(Arrays.asList(
                 Variables.Resource.SHEEP, 
@@ -57,8 +53,6 @@ public class BoardFactory {
                 Variables.Resource.DESERT
             ));
         Collections.shuffle(resources);
-
-        System.out.println("> resources shuffled");
 
         int resourceIndex = 0;
         int numberIndex = 0;
