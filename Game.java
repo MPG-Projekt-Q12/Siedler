@@ -46,6 +46,7 @@ public class Game {
 
         currentPlayer = 1;
         updateCurrentPlayerObject();
+        addConsole("----- " + currentPlayerObject.getPlayerName() + " ist ab Zug -----");
         draw.currentPlayer = currentPlayer;
         draw.repaint();
 
@@ -74,6 +75,7 @@ public class Game {
 
                 currentPlayer = setupIndex;
                 updateCurrentPlayerObject();
+                addConsole("----- " + currentPlayerObject.getPlayerName() + " ist ab Zug -----");
                 draw.currentPlayer = currentPlayer;
                 draw.repaint();
 
@@ -85,6 +87,7 @@ public class Game {
             setupIndex = names.length;
             currentPlayer = setupIndex;
             updateCurrentPlayerObject();
+            addConsole("----- " + currentPlayerObject.getPlayerName() + " ist ab Zug -----");
             draw.currentPlayer = currentPlayer;
             draw.repaint();
 
@@ -99,6 +102,7 @@ public class Game {
 
                 currentPlayer = setupIndex;
                 updateCurrentPlayerObject();
+                addConsole("----- " + currentPlayerObject.getPlayerName() + " ist ab Zug -----");
                 draw.currentPlayer = currentPlayer;
                 draw.repaint();
 
@@ -109,6 +113,7 @@ public class Game {
 
             currentPlayer = 1;
             updateCurrentPlayerObject();
+            addConsole("----- " + currentPlayerObject.getPlayerName() + " ist ab Zug -----");
             draw.currentPlayer = currentPlayer;
             draw.repaint();
 
@@ -121,6 +126,7 @@ public class Game {
             currentPlayer = 1;
         }
         updateCurrentPlayerObject();
+        addConsole("----- " + currentPlayerObject.getPlayerName() + " ist ab Zug -----");
         draw.currentPlayer = currentPlayer;
         draw.repaint();
 
