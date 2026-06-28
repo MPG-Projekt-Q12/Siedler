@@ -81,7 +81,7 @@ public class Main {
                     Game game = new Game(draw);
 
                     game.newGame(1920, 1080, playerNames, maxWinningPoints);
-                    game.addConsole("Spiel gestartet");
+
             });
     }
 }

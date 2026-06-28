@@ -10,41 +10,39 @@ public class Turn{
 
         currentPlayer = playerNumber;
 
+        game.addConsole("Baue ein Settlement");
+        
         waitingForNext = false;
         waitingForSettlement = true;
         waitingForStreet = false;
-
-        game.addConsole("Baue ein Settlement");
     }
 
     public void startTurn2(int playerNumber, Game game){
 
         currentPlayer = playerNumber;
 
+        game.addConsole("Baue ein Settlement");
+
         waitingForNext = false;
         waitingForSettlement = true;
         waitingForStreet = false;
-
-        game.addConsole("Baue ein Settlement");
     }
 
     public void turn(int playerNumber, Dice dice, Draw draw, Game game){
         waitingForNext = false;
-        dice.rollDice();
+        dice.rollDice(game);
 
         if(dice.getDiceSum() == 7){
 
             waitingForRobber = true;
             waitingForNext = false;
 
-            game.addConsole("Setze den Räuber");
-
             draw.repaint();
             return;
         }
 
         RessourceDistribution.distributeResources(dice.getDiceSum(), draw.tiles, draw.settlements, draw.players, game);
-        
+
         draw.repaint();
         waitingForNext = true;
         draw.nextButtonReady = true;

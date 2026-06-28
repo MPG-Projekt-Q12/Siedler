@@ -28,26 +28,13 @@ public class OnClick extends MouseAdapter {
         //Next Button
         if (draw.nextButton.contains(mx, my) && turn.waitingForNext && game.getTradeState() == Variables.TradeState.NONE) {
 
-            draw.nextButtonPressed = true;
-            draw.repaint();
+            turn.waitingForNext = false;
+            draw.nextButtonReady = false;
 
-            javax.swing.Timer timer = new javax.swing.Timer(120, ev -> {
-
-                            draw.nextButtonPressed = false;
-                            draw.repaint();
-
-                            turn.waitingForNext = false;
-                            draw.nextButtonReady = false;
-
-                            game.nextTurn();
-                    });
-
-            timer.setRepeats(false);
-            timer.start();
+            game.nextTurn();
 
             return;
         }
-
         // Robber
         if (turn.waitingForRobber) {
 
@@ -99,7 +86,7 @@ public class OnClick extends MouseAdapter {
                     turn.waitingForSettlement = false;
                     turn.waitingForStreet = true;
 
-                    game.addConsole("Baue eine Straße!");
+                    game.addConsole("Baue eine Straße");
 
                     draw.repaint();
                     return;
@@ -251,7 +238,7 @@ public class OnClick extends MouseAdapter {
             draw.repaint();
             return;
         }
-        
+
         if (draw.tradeCancelButton.contains(mx, my)) {
 
             game.setTradeState(Variables.TradeState.NONE);

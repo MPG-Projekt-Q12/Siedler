@@ -2,25 +2,20 @@ import java.awt.Color;
 
 public class Dice {
 
-    private Game game;
-
     public int dice1 = 1;
     public int dice2 = 1;
     public int sum = 2;
 
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    public void rollDice() {
+    public void rollDice(Game game) {
 
         dice1 = (int)(Math.random() * 6) + 1;
         dice2 = (int)(Math.random() * 6) + 1;
 
         sum = dice1 + dice2;
 
-        if (game != null) {
-            game.addConsole("Es wurde eine " + sum + " gewürfelt.");
+        game.addConsole("Es wurde eine " + sum + " gewürfelt.");
+        if (sum == 7) {
+            game.addConsole("Setze den Räuber");
         }
     }
 

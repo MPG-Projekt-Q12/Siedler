@@ -26,30 +26,6 @@ public class Trade {
         }
     }
 
-    public Player getFrom() {
-        return from;
-    }
-
-    public Player getTo() {
-        return to;
-    }
-
-    public int getFromGives(Variables.Resource r) {
-        return fromGives.get(r);
-    }
-
-    public int getToGives(Variables.Resource r) {
-        return toGives.get(r);
-    }
-
-    public void setFromGives(Variables.Resource r, int amount) {
-        fromGives.put(r, amount);
-    }
-
-    public void setToGives(Variables.Resource r, int amount) {
-        toGives.put(r, amount);
-    }
-
     public void addFromGives(Variables.Resource r, int amount) {
 
         int neu = Math.max(0, fromGives.get(r) + amount);
@@ -99,8 +75,6 @@ public class Trade {
             int receive = toGives.get(r);
 
             if (give > 0) {
-
-                // Jede angebotene Ressource muss ein Vielfaches von 4 sein
                 if (give % 4 != 0) {
                     return false;
                 }
@@ -141,5 +115,29 @@ public class Trade {
 
             from.addResource(r, receive);
         }
+    }
+
+    public Player getFrom() {
+        return from;
+    }
+
+    public Player getTo() {
+        return to;
+    }
+
+    public int getFromGives(Variables.Resource r) {
+        return fromGives.get(r);
+    }
+
+    public int getToGives(Variables.Resource r) {
+        return toGives.get(r);
+    }
+
+    public void setFromGives(Variables.Resource r, int amount) {
+        fromGives.put(r, amount);
+    }
+
+    public void setToGives(Variables.Resource r, int amount) {
+        toGives.put(r, amount);
     }
 }

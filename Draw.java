@@ -76,6 +76,7 @@ public class Draw extends JPanel {
         g2.translate(offsetX, offsetY);
         g2.scale(scale, scale);
 
+        drawConsole(g);
         for (Tile t : tiles) drawTile(g, t);
         for (Street s : streets){
             if (s.getBuild()){
@@ -91,7 +92,6 @@ public class Draw extends JPanel {
         drawDice(g);
         drawNextButton(g);
         drawTradeMenu(g);
-        drawConsole(g);
 
         g2.setTransform(old);
     }
@@ -784,6 +784,8 @@ public class Draw extends JPanel {
 
             lineY += 22;
         }
+        
+        System.out.println("DRAW: " + game.getConsole().size());
     }
 
     // Helper

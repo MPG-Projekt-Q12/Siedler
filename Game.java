@@ -37,6 +37,8 @@ public class Game {
 
     public void newGame(int x, int y, String[] names, int maxWinningPoints){
 
+        addConsole("Spiel gestartet");
+
         this.names = names;
         this.maxWinningPoints = maxWinningPoints;
 
@@ -128,7 +130,7 @@ public class Game {
     public void updateCurrentPlayerObject(){
         for (Player p : boardfactory.players){
             if (p.getPlayerNumber() == currentPlayer){
-                
+
                 currentPlayerObject = p;
                 return;
             }
@@ -173,10 +175,15 @@ public class Game {
 
     // get und set
     public void addConsole(String text) {
+        System.out.println("ADD: " + text);
+
         console.add(text);
+
         if (console.size() > 15) {
             console.remove(0);
         }
+
+        draw.repaint();
     }
 
     public ArrayList<String> getConsole() {
