@@ -43,12 +43,8 @@ public class Game {
         this.maxWinningPoints = maxWinningPoints;
 
         boardfactory.createBoard(x, y, names);
-
-        currentPlayer = 1;
-        updateCurrentPlayerObject();
-        addConsole("----- " + currentPlayerObject.getPlayerName() + " ist ab Zug -----");
-        draw.currentPlayer = currentPlayer;
-        draw.repaint();
+        
+        setCurrentPlayer(1);
 
         turn.startTurn1(currentPlayer, this);
     }
@@ -72,12 +68,8 @@ public class Game {
         if (setupPhase == 1){
             setupIndex++;
             if (setupIndex <= names.length){
-
-                currentPlayer = setupIndex;
-                updateCurrentPlayerObject();
-                addConsole("----- " + currentPlayerObject.getPlayerName() + " ist ab Zug -----");
-                draw.currentPlayer = currentPlayer;
-                draw.repaint();
+               
+                setCurrentPlayer(setupIndex);
 
                 turn.startTurn1(currentPlayer, this);
 
@@ -85,11 +77,8 @@ public class Game {
             }
             setupPhase = 2;
             setupIndex = names.length;
-            currentPlayer = setupIndex;
-            updateCurrentPlayerObject();
-            addConsole("----- " + currentPlayerObject.getPlayerName() + " ist ab Zug -----");
-            draw.currentPlayer = currentPlayer;
-            draw.repaint();
+            
+            setCurrentPlayer(setupIndex);
 
             turn.startTurn2(currentPlayer, this);
             return;
@@ -99,23 +88,15 @@ public class Game {
             setupIndex--;
             
             if (setupIndex >= 1){
-
-                currentPlayer = setupIndex;
-                updateCurrentPlayerObject();
-                addConsole("----- " + currentPlayerObject.getPlayerName() + " ist ab Zug -----");
-                draw.currentPlayer = currentPlayer;
-                draw.repaint();
+                
+                setCurrentPlayer(setupIndex);
 
                 turn.startTurn2(currentPlayer, this);
                 return;
             }
             setupPhase = 3;
 
-            currentPlayer = 1;
-            updateCurrentPlayerObject();
-            addConsole("----- " + currentPlayerObject.getPlayerName() + " ist ab Zug -----");
-            draw.currentPlayer = currentPlayer;
-            draw.repaint();
+            setCurrentPlayer(1);
 
             turn.turn(currentPlayer, dice, draw, this);
             return;
@@ -125,10 +106,8 @@ public class Game {
         if (currentPlayer > names.length){
             currentPlayer = 1;
         }
-        updateCurrentPlayerObject();
-        addConsole("----- " + currentPlayerObject.getPlayerName() + " ist ab Zug -----");
-        draw.currentPlayer = currentPlayer;
-        draw.repaint();
+       
+        setCurrentPlayer(currentPlayer);
 
         turn.turn(currentPlayer, dice, draw, this);
     }
@@ -259,5 +238,13 @@ public class Game {
         }
 
         return null;
+    }
+    
+    public  void setCurrentPlayer(int playerIndex) {
+        currentPlayer = playerIndex;
+        updateCurrentPlayerObject();
+        addConsole("----- " + currentPlayerObject.getPlayerName() + " ist am Zug -----");
+        draw.currentPlayer = currentPlayer;
+        draw.repaint();
     }
 }

@@ -94,6 +94,7 @@ public class Trade {
 
     public void execute() {
 
+        
         if (!canExecute()) {
             return;
         }
