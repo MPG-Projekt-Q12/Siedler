@@ -149,6 +149,7 @@ public class OnClick extends MouseAdapter {
             }
         }
 
+        // Trades
         if (game.getTradeState() == Variables.TradeState.NONE && !turn.waitingForRobber) {
             for (int i = 0; i < draw.tradeTargets.size(); i++) {
 

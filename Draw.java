@@ -67,7 +67,7 @@ public class Draw extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        System.out.println("paint");
         drawBackground(g);
 
         updateTransform();
@@ -636,6 +636,7 @@ public class Draw extends JPanel {
         g.setFont(new Font( "Arial", Font.BOLD, 30));
         String text = String.valueOf(amount);
         FontMetrics fm = g.getFontMetrics();
+        
         int tx = x + (width - fm.stringWidth(text)) / 2;
         int ty = y + (height + fm.getAscent()) / 2 - 3;
 
@@ -699,6 +700,7 @@ public class Draw extends JPanel {
         g.setFont(new Font("Arial", Font.BOLD,28));
         FontMetrics fm = g.getFontMetrics();
         String text = "OK";
+        
         int tx = x + (buttonWidth - fm.stringWidth(text)) / 2;
         int ty = y + press + (buttonHeight + fm.getAscent()) / 2 - 5;
 
@@ -734,7 +736,7 @@ public class Draw extends JPanel {
 
     // Console
     public void drawConsole(Graphics g) {
-
+        System.out.println("drawConsole");
         int startX = baseX - 500 - 50;
         int startY = 350;
         int width = 500;
@@ -774,18 +776,17 @@ public class Draw extends JPanel {
 
         g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 18));
 
-        for (String s : game.getConsole()) {
+        ArrayList<String> list = game.getConsole();
 
+        for (int i = 0; i < list.size(); i++) {
             if (lineY > maxY) {
                 break;
             }
 
-            g.drawString(s, textX, lineY);
+            g.drawString(list.get(i), textX, lineY);
 
             lineY += 22;
         }
-        
-        System.out.println("DRAW: " + game.getConsole().size());
     }
 
     // Helper

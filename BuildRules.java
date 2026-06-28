@@ -95,9 +95,9 @@ public class BuildRules {
         return true;
     }
 
-    //Subfunktions
+    // Helpers
 
-    //Settlement
+    // Settlement
     public static boolean isSettlementFree(Settlement settlement) {
         return !settlement.getBuild();
     }
@@ -132,7 +132,7 @@ public class BuildRules {
         return false;
     }
 
-    //Street
+    // Street
     public static boolean isStreetFree(Street street) {
         return !street.getBuild();
     }
@@ -167,7 +167,7 @@ public class BuildRules {
         return false;
     }
 
-    //City
+    // City
     public static boolean isOwnSettlement(Settlement settlement, Player player) {
         if (!settlement.getBuild()) {
             return false;
@@ -176,7 +176,7 @@ public class BuildRules {
         return settlement.getOwner() == player.getPlayerNumber();
     }
 
-    //Resourcechecks
+    // Resourcechecks
     public static boolean hasSettlementResources(Player player) {
         return player.getResource(Variables.Resource.WOOD) >= 1 && player.getResource(Variables.Resource.BRICK) >= 1 && player.getResource(Variables.Resource.WHEAT) >= 1 && player.getResource(Variables.Resource.SHEEP) >= 1;
     }
@@ -189,7 +189,7 @@ public class BuildRules {
         return player.getResource(Variables.Resource.WHEAT) >= 2 && player.getResource(Variables.Resource.STONE) >= 3;
     }
 
-    //Resource payment
+    // Resource payment
     public static void paySettlementResources(Player player) {
         player.addResource(Variables.Resource.WOOD, -1);
         player.addResource(Variables.Resource.BRICK, -1);
@@ -207,7 +207,7 @@ public class BuildRules {
         player.addResource(Variables.Resource.STONE, -3);
     }
 
-    //Helper
+    // Helper
     public static double distance(int x1, int y1, int x2, int y2) {
         return Math.hypot(x1 - x2, y1 - y2);
     }

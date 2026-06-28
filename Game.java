@@ -94,6 +94,7 @@ public class Game {
 
         if (setupPhase == 2){
             setupIndex--;
+            
             if (setupIndex >= 1){
 
                 currentPlayer = setupIndex;
@@ -175,11 +176,9 @@ public class Game {
 
     // get und set
     public void addConsole(String text) {
-        System.out.println("ADD: " + text);
-
         console.add(text);
 
-        if (console.size() > 15) {
+        if (console.size() > 12) {
             console.remove(0);
         }
 
@@ -187,6 +186,7 @@ public class Game {
     }
 
     public ArrayList<String> getConsole() {
+        System.out.println("GET: " + console.hashCode());
         return console;
     }
 
